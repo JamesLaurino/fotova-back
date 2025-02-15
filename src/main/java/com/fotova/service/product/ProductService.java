@@ -1,9 +1,10 @@
 package com.fotova.service.product;
 
 
-import com.drools.dto.product.ProductDto;
+import com.drools.dto.product.ProductDtoDrl;
+import com.fotova.dto.ProductDtoAmq;
+import com.fotova.dto.product.ProductDtoBack;
 import com.drools.service.BusinessProductDroolsService;
-import com.fotova.entity.CommentEntity;
 import com.fotova.entity.ProductEntity;
 import com.fotova.repository.product.ProductRepositoryImpl;
 import com.fotova.service.RabbitMQProducer;
@@ -22,26 +23,29 @@ public class ProductService
     private BusinessProductDroolsService businessProductDroolsService;
 
     @Autowired
+    private ProductMapper productMapper;
+
+    @Autowired
     private RabbitMQProducer rabbitMQProducer;
 
 
-    //TODO : add mapping for productEntity
     public ProductEntity saveProduct(ProductEntity product) {
         return productRepository.save(product);
     }
 
-    //TODO : add mapping for productEntity
-    public List<ProductEntity> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductDtoBack> getAllProducts() {
+        List<ProductEntity> productEntityList = productRepository.findAll();
+        return productMapper.mapToProductDtoBackList(productEntityList);
     }
 
-    public ProductEntity getProductById(int productId) {
-        return productRepository.findById(productId);
+    public ProductDtoBack getProductById(int productId) {
+        ProductEntity productEntity = productRepository.findById(productId);
+        return productMapper.mapToProductDtoBack(productEntity);
     }
 
-    //TODO : adapt wit real drool
+
     public void testDroolsService() {
-        ProductDto productDto = new ProductDto();
+        ProductDtoDrl productDto = new ProductDtoDrl();
         productDto.setId(1);
         productDto.setName("<UNK>");
         productDto.setPrice(1.0);
@@ -50,8 +54,8 @@ public class ProductService
         businessProductDroolsService.kieService(productDto);
     }
 
-    public void testAMQPService(ProductDto productDto) {
-        com.fotova.dto.ProductDto product = new com.fotova.dto.ProductDto();
+    public void testAMQPService(ProductDtoDrl productDto) {
+        ProductDtoAmq product = new ProductDtoAmq();
         product.setId(productDto.getId());
         product.setName(productDto.getName());
         product.setPrice(productDto.getPrice());
@@ -59,16 +63,4 @@ public class ProductService
         rabbitMQProducer.sendMessage(product);
     }
 
-    //    public Integer addProduct(int a, int b) {
-    //        return a + b;
-    //    }
-    //
-    //    public List<String> getAllProductsMock() {
-    //
-    //        List<String> products = new ArrayList<>();
-    //        products.add("Product 1");
-    //        products.add("Product 2");
-    //
-    //        return products;
-    //    }
 }

@@ -84,14 +84,6 @@
       <artifactId>spring-data-commons</artifactId>
       <version>3.4.2</version>
     </dependency>
-
-    <!-- Spring Data JPA -->
-    <dependency>
-      <groupId>org.springframework.data</groupId>
-      <artifactId>spring-data-jpa</artifactId>
-      <version>3.4.2</version>
-    </dependency>
-
     <!-- Hibernate ORM -->
     <dependency>
       <groupId>org.hibernate</groupId>
@@ -113,6 +105,13 @@
       <version>3.4.1</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>6.6.7.Final</version>
+      <type>pom</type>
+    </dependency>
 
     <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations -->
     <dependency>
