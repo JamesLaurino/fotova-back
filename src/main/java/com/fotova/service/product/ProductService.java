@@ -28,9 +28,11 @@ public class ProductService
     @Autowired
     private RabbitMQProducer rabbitMQProducer;
 
+    public ProductDtoBack saveProduct(ProductDtoBack product, final int categoryId) {
 
-    public ProductEntity saveProduct(ProductEntity product) {
-        return productRepository.save(product);
+        ProductEntity productEntity = productMapper.mapToProductEntity(product);
+        ProductEntity productEntityToMap = productRepository.saveWithCategory(productEntity,categoryId);
+        return productMapper.mapToProductDtoBack(productEntityToMap);
     }
 
     public List<ProductDtoBack> getAllProducts() {

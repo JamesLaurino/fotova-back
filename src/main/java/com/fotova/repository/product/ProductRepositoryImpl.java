@@ -1,7 +1,10 @@
 package com.fotova.repository.product;
 
+import com.fotova.dto.category.CategoryDto;
+import com.fotova.entity.CategoryEntity;
 import com.fotova.entity.ProductEntity;
 import com.fotova.repository.ICrud;
+import com.fotova.service.category.CategoryService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +20,10 @@ public class ProductRepositoryImpl implements ICrud<ProductEntity> {
     private EntityManager entityManager;
 
     @Autowired
-    ProductRepositoryJpa productRepositoryJpa;
+    private ProductRepositoryJpa productRepositoryJpa;
+
+    @Autowired
+    private CategoryService categoryService;
 
     @Override
     @Transactional
@@ -66,9 +72,8 @@ public class ProductRepositoryImpl implements ICrud<ProductEntity> {
 
     @Override
     @Transactional
-    public ProductEntity save(ProductEntity productEntity) {
-        entityManager.persist(productEntity);
-        return productEntity;
+    public ProductEntity save(ProductEntity productEntity) {;
+        return productRepositoryJpa.save(productEntity);
     }
 
     @Override
@@ -82,4 +87,14 @@ public class ProductRepositoryImpl implements ICrud<ProductEntity> {
     public ProductEntity update(ProductEntity productEntity) {
         return entityManager.merge(productEntity);
     }
+
+
+    @Transactional
+    public ProductEntity saveWithCategory(ProductEntity productEntity, int categoryId) {
+
+        CategoryEntity categoryEntity = categoryService.getCategoryById(categoryId);
+        productEntity.setCategory(categoryEntity);
+        return productRepositoryJpa.save(productEntity);
+    }
+
 }
