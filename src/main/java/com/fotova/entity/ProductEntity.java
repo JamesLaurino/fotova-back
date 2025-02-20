@@ -22,6 +22,9 @@ public class ProductEntity {
     @Column(name = "price")
     private Double price;
 
+    @Column(name = "url")
+    private String url;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private CategoryEntity category;
