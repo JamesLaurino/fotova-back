@@ -29,9 +29,10 @@ public class CategoryRepositoryImpl implements ICrud<CategoryEntity> {
     }
 
     @Override
-    public void delete(CategoryEntity categoryEntity) {
+    public void deleteAll() {}
 
-    }
+    @Override
+    public void deleteById(int id) {}
 
     @Override
     public CategoryEntity update(CategoryEntity categoryEntity) {

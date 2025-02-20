@@ -34,11 +34,14 @@ public class RoleRepositoryImpl implements ICrud<RoleEntity> {
     }
 
     @Override
-    public void delete(RoleEntity roleEntity) {
+    public void deleteAll() {
     }
 
     @Override
     public RoleEntity update(RoleEntity roleEntity) {
         return null;
     }
+
+    @Override
+    public void deleteById(int id) {}
 }

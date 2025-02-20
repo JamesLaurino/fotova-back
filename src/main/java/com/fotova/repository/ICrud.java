@@ -9,7 +9,9 @@ public interface ICrud<T> {
 
     T save(T t);
 
-    void delete(T t);
+    void deleteAll();
+
+    void deleteById(int id);
 
     T update(T t);
 }

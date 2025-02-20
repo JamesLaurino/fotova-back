@@ -35,8 +35,7 @@ public class ClientRepositoryImpl implements ICrud<ClientEntity> {
     }
 
     @Override
-    public void delete(ClientEntity clientEntity) {
-        clientRepository.delete(clientEntity);
+    public void deleteAll() {
     }
 
     @Override
@@ -44,6 +43,8 @@ public class ClientRepositoryImpl implements ICrud<ClientEntity> {
         return clientRepository.save(clientEntity);
     }
 
+    @Override
+    public void deleteById(int id) {}
 
     public Boolean existsByUsername(String username) {
         return clientRepository.existsByUsername(username);
