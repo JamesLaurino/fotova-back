@@ -45,6 +45,9 @@ public class ProductService
         return productMapper.mapToProductDtoBack(productEntity);
     }
 
+    public void deleteProductById(int productId) {
+        productRepository.deleteById(productId);
+    }
 
     public void testDroolsService() {
         ProductDtoDrl productDto = new ProductDtoDrl();

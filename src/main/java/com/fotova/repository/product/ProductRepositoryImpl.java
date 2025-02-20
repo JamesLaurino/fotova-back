@@ -78,9 +78,7 @@ public class ProductRepositoryImpl implements ICrud<ProductEntity> {
 
     @Override
     @Transactional
-    public void delete(ProductEntity productEntity) {
-        entityManager.remove(productEntity);
-    }
+    public void deleteAll() {}
 
     @Override
     @Transactional
@@ -95,6 +93,11 @@ public class ProductRepositoryImpl implements ICrud<ProductEntity> {
         CategoryEntity categoryEntity = categoryService.getCategoryById(categoryId);
         productEntity.setCategory(categoryEntity);
         return productRepositoryJpa.save(productEntity);
+    }
+
+    @Override
+    public void deleteById(int id) {
+        productRepositoryJpa.deleteById(id);
     }
 
 }
