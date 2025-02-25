@@ -2,6 +2,7 @@ package com.fotova.service.product;
 
 import com.fotova.dto.product.CategoryInnerProductDto;
 import com.fotova.dto.product.ProductDtoBack;
+import com.fotova.entity.CategoryEntity;
 import com.fotova.entity.ProductEntity;
 import org.springframework.stereotype.Service;
 
@@ -61,6 +62,14 @@ public class ProductMapper {
         productEntity.setPrice(productDtoBack.getPrice());
         productEntity.setQuantity(productDtoBack.getQuantity());
         productEntity.setUrl(productDtoBack.getUrl());
+
+        if(productDtoBack.getCategoryInnerProductDto() != null){
+            CategoryEntity categoryEntity = new CategoryEntity();
+            categoryEntity.setId(productDtoBack.getCategoryInnerProductDto().getId());
+            categoryEntity.setName(productDtoBack.getCategoryInnerProductDto().getName());
+            productEntity.setCategory(categoryEntity);
+        }
+
         return productEntity;
     }
 

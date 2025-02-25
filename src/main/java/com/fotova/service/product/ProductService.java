@@ -49,6 +49,12 @@ public class ProductService
         productRepository.deleteById(productId);
     }
 
+    public ProductDtoBack updateProduct(ProductDtoBack productDtoBack) {
+        ProductEntity productEntity = productMapper.mapToProductEntity(productDtoBack);
+        productRepository.save(productEntity);
+        return productDtoBack;
+    }
+
     public void testDroolsService() {
         ProductDtoDrl productDto = new ProductDtoDrl();
         productDto.setId(1);

@@ -28,21 +28,6 @@ public class ProductRepositoryImpl implements ICrud<ProductEntity> {
     @Override
     @Transactional
     public ProductEntity findById(int id) {
-//        String sql = "SELECT * FROM product_entity WHERE id = ?1";
-//
-//        Query query = entityManager.createNativeQuery(sql);
-//        query.setParameter(1, id);
-//
-//        Object[] row = (Object[]) query.getSingleResult();  // Une seule ligne retournée
-//
-//        ProductEntity entity = new ProductEntity();
-//        entity.setId((int)row[1]);
-//        entity.setName((String) row[4]);
-//        entity.setPrice((Double) row[2]);
-//        entity.setQuantity((int) row[3]);
-//        entity.setCategory(null);
-//
-//        return entity;
         return productRepositoryJpa.findById(id).orElse(null);
     }
 
@@ -50,24 +35,6 @@ public class ProductRepositoryImpl implements ICrud<ProductEntity> {
     @Transactional
     public List<ProductEntity> findAll() {
         return productRepositoryJpa.findAll();
-//        String sql = "SELECT * FROM product_entity";
-//
-//        Query query = entityManager.createNativeQuery(sql);
-//
-//        List<Object[]> results = query.getResultList();
-//        List<ProductEntity> productEntities = new ArrayList<>();
-//
-//        for (Object[] row : results) {
-//            ProductEntity entity = new ProductEntity();
-//            entity.setId((int)row[1]);
-//            entity.setName((String) row[4]);
-//            entity.setPrice((Double) row[2]);
-//            entity.setQuantity((int) row[3]);
-//            entity.setCategory(null);
-//            productEntities.add(entity);
-//        }
-//
-//        return productEntities;
     }
 
     @Override
@@ -83,13 +50,11 @@ public class ProductRepositoryImpl implements ICrud<ProductEntity> {
     @Override
     @Transactional
     public ProductEntity update(ProductEntity productEntity) {
-        return entityManager.merge(productEntity);
+        return productRepositoryJpa.save(productEntity);
     }
-
 
     @Transactional
     public ProductEntity saveWithCategory(ProductEntity productEntity, int categoryId) {
-
         CategoryEntity categoryEntity = categoryService.getCategoryById(categoryId);
         productEntity.setCategory(categoryEntity);
         return productRepositoryJpa.save(productEntity);
