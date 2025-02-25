@@ -18,6 +18,15 @@ public class CategoryMapper {
         return categoryDto;
     }
 
+    public CategoryEntity toCategoryEntity(CategoryDto categoryDto){
+        CategoryEntity categoryEntity = new CategoryEntity();
+        if(categoryDto.getId()!=null){
+            categoryEntity.setId(categoryDto.getId());
+        }
+        categoryEntity.setName(categoryDto.getName());
+        return categoryEntity;
+    }
+
     public List<CategoryDto> toCategoryDtoList(List<CategoryEntity> categoryEntities){
         List<CategoryDto> categoryDtoList = new ArrayList<>();
         for(CategoryEntity categoryEntity : categoryEntities){

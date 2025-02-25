@@ -27,6 +27,11 @@ public class CategoryService {
     public List<CategoryDto> getAllCategories(){
         List<CategoryEntity> categoryEntities = categoryRepositoryImpl.findAll();
         return categoryMapper.toCategoryDtoList(categoryEntities);
+    }
 
+    public CategoryDto addCategory(CategoryDto categoryDto){
+        CategoryEntity categoryEntity = categoryMapper.toCategoryEntity(categoryDto);
+        CategoryEntity categoryEntityRes = categoryRepositoryImpl.save(categoryEntity);
+        return categoryMapper.toCategoryDto(categoryEntityRes);
     }
 }
