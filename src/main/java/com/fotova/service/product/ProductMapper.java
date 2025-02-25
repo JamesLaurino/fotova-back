@@ -16,33 +16,18 @@ public class ProductMapper {
         List<ProductDtoBack> productDtoList = new ArrayList<>();
 
         for(ProductEntity productEntity : products) {
-
-            ProductDtoBack productDto = new ProductDtoBack();
-            productDto.setId(productEntity.getId());
-            productDto.setName(productEntity.getName());
-            productDto.setPrice(productEntity.getPrice());
-            productDto.setQuantity(productEntity.getQuantity());
-            productDto.setUrl(productEntity.getUrl());
-
-            if(productEntity.getCategory() != null) {
-                CategoryInnerProductDto innerCategory = new CategoryInnerProductDto();
-                innerCategory.setId(productEntity.getCategory().getId());
-                innerCategory.setName(productEntity.getCategory().getName());
-
-                productDto.setCategoryInnerProductDto(innerCategory);
-            } else {
-                productDto.setCategoryInnerProductDto(null);
-            }
-
+            ProductDtoBack productDto = mapToProductDto(productEntity);
             productDtoList.add(productDto);
-
         }
 
         return productDtoList;
     }
 
     public ProductDtoBack mapToProductDtoBack(ProductEntity productEntity){
+        return mapToProductDto(productEntity);
+    }
 
+    private ProductDtoBack mapToProductDto(ProductEntity productEntity){
         ProductDtoBack productDto = new ProductDtoBack();
         productDto.setId(productEntity.getId());
         productDto.setName(productEntity.getName());
@@ -62,7 +47,6 @@ public class ProductMapper {
         }
 
         return productDto;
-
     }
 
     public ProductEntity mapToProductEntity(ProductDtoBack productDtoBack){
