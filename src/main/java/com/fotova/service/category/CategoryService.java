@@ -24,6 +24,11 @@ public class CategoryService {
         return categoryRepositoryJpa.findById(categoryId).get();
     }
 
+    public CategoryDto getCategoryDtoById(int categoryId){
+        CategoryEntity categoryEntity = categoryRepositoryJpa.findById(categoryId).get();
+        return categoryMapper.toCategoryDto(categoryEntity);
+    }
+
     public List<CategoryDto> getAllCategories(){
         List<CategoryEntity> categoryEntities = categoryRepositoryImpl.findAll();
         return categoryMapper.toCategoryDtoList(categoryEntities);
