@@ -34,4 +34,10 @@ public class CategoryService {
         CategoryEntity categoryEntityRes = categoryRepositoryImpl.save(categoryEntity);
         return categoryMapper.toCategoryDto(categoryEntityRes);
     }
+
+    public CategoryDto updateCategory(CategoryDto categoryDto){
+        CategoryEntity categoryEntity = categoryMapper.toCategoryEntity(categoryDto);
+        CategoryEntity categoryEntityRes = categoryRepositoryImpl.update(categoryEntity);
+        return categoryMapper.toCategoryDto(categoryEntityRes);
+    }
 }

@@ -36,6 +36,6 @@ public class CategoryRepositoryImpl implements ICrud<CategoryEntity> {
 
     @Override
     public CategoryEntity update(CategoryEntity categoryEntity) {
-        return null;
+        return categoryRepositoryJpa.save(categoryEntity);
     }
 }
