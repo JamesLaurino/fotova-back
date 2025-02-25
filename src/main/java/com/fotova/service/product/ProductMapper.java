@@ -24,11 +24,16 @@ public class ProductMapper {
             productDto.setQuantity(productEntity.getQuantity());
             productDto.setUrl(productEntity.getUrl());
 
-            CategoryInnerProductDto innerCategory = new CategoryInnerProductDto();
-            innerCategory.setId(productEntity.getCategory().getId());
-            innerCategory.setName(productEntity.getCategory().getName());
+            if(productEntity.getCategory() != null) {
+                CategoryInnerProductDto innerCategory = new CategoryInnerProductDto();
+                innerCategory.setId(productEntity.getCategory().getId());
+                innerCategory.setName(productEntity.getCategory().getName());
 
-            productDto.setCategoryInnerProductDto(innerCategory);
+                productDto.setCategoryInnerProductDto(innerCategory);
+            } else {
+                productDto.setCategoryInnerProductDto(null);
+            }
+
             productDtoList.add(productDto);
 
         }
@@ -45,11 +50,16 @@ public class ProductMapper {
         productDto.setQuantity(productEntity.getQuantity());
         productDto.setUrl(productEntity.getUrl());
 
-        CategoryInnerProductDto innerCategory = new CategoryInnerProductDto();
-        innerCategory.setId(productEntity.getCategory().getId());
-        innerCategory.setName(productEntity.getCategory().getName());
+        if(productEntity.getCategory()!=null){
+            CategoryInnerProductDto innerCategory = new CategoryInnerProductDto();
+            innerCategory.setId(productEntity.getCategory().getId());
+            innerCategory.setName(productEntity.getCategory().getName());
 
-        productDto.setCategoryInnerProductDto(innerCategory);
+            productDto.setCategoryInnerProductDto(innerCategory);
+        }
+        else {
+            productDto.setCategoryInnerProductDto(null);
+        }
 
         return productDto;
 
