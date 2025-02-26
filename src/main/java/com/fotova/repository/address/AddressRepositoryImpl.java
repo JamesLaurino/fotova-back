@@ -30,7 +30,7 @@ public class AddressRepositoryImpl implements ICrud<AddressEntity> {
 
     @Override
     public AddressEntity save(AddressEntity addressEntity) {
-        return null;
+        return addressRepositoryJpa.save(addressEntity);
     }
 
     @Override

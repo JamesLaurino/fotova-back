@@ -26,4 +26,10 @@ public class AddressService {
         AddressEntity addressEntity = addressRepository.findById(id);
         return addressMapper.mpaToAddressDto(addressEntity);
     }
+
+    public AddressDto addAddress(AddressDto addressDto){
+        AddressEntity addressEntity = addressMapper.mapAddressDtoToAddressEntity(addressDto);
+        addressEntity = addressRepository.save(addressEntity);
+        return addressMapper.mpaToAddressDto(addressEntity);
+    }
 }

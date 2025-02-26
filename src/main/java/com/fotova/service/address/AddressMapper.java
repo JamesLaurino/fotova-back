@@ -20,6 +20,20 @@ public class AddressMapper {
         return addressDto;
     }
 
+    public AddressEntity mapAddressDtoToAddressEntity(AddressDto addressDto){
+        AddressEntity addressEntity = new AddressEntity();
+
+        if(addressDto.getCity() != null){
+            addressEntity.setCity(addressDto.getCity());
+        }
+
+        addressEntity.setCity(addressDto.getCity());
+        addressEntity.setNumber(addressDto.getNumber());
+        addressEntity.setCountry(addressDto.getCountry());
+        addressEntity.setStreet(addressDto.getStreet());
+        return addressEntity;
+    }
+
     public List<AddressDto> mpaToAddressDtoList(List<AddressEntity> addressEntityList) {
 
         List<AddressDto> addressDtoList = new ArrayList<>();
