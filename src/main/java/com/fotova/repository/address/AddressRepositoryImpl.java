@@ -20,7 +20,7 @@ public class AddressRepositoryImpl implements ICrud<AddressEntity> {
 
     @Override
     public AddressEntity findById(int id) {
-        return null;
+        return addressRepositoryJpa.findById(id).orElse(null);
     }
 
     @Override

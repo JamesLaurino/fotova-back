@@ -9,20 +9,11 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ConfigBean {
-//    @Bean
-//    public ProductRepositoryImpl productRepositoryImpl() {
-//        return new ProductRepositoryImpl();
-//    }
 
     @Bean
     public KieContainer kieContainer() {
         return KieServices.Factory.get().getKieClasspathContainer();
     }
-//
-//    @Bean
-//    public ClientRepositoryImpl clientRepositoryImpl() {
-//        return new ClientRepositoryImpl();
-//    }
 
     @Bean
     public RoleRepositoryImpl roleRepositoryImpl() {

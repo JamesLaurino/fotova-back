@@ -21,4 +21,9 @@ public class AddressService {
         List<AddressEntity> addressEntities = addressRepository.findAll();
         return addressMapper.mpaToAddressDtoList(addressEntities);
     }
+
+    public AddressDto getAddressById(int id){
+        AddressEntity addressEntity = addressRepository.findById(id);
+        return addressMapper.mpaToAddressDto(addressEntity);
+    }
 }
