@@ -20,11 +20,11 @@ public class AddressMapper {
         return addressDto;
     }
 
-    public AddressEntity mapAddressDtoToAddressEntity(AddressDto addressDto){
+    public AddressEntity mapToAddressEntity(AddressDto addressDto){
         AddressEntity addressEntity = new AddressEntity();
 
-        if(addressDto.getCity() != null){
-            addressEntity.setCity(addressDto.getCity());
+        if(addressDto.getId() != null){
+            addressEntity.setId(addressDto.getId());
         }
 
         addressEntity.setCity(addressDto.getCity());

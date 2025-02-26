@@ -27,8 +27,14 @@ public class AddressService {
         return addressMapper.mpaToAddressDto(addressEntity);
     }
 
+    public AddressDto updateAddress(AddressDto addressDto){
+        AddressEntity addressEntity = addressMapper.mapToAddressEntity(addressDto);
+        AddressEntity addressEntityRes= addressRepository.update(addressEntity);
+        return addressMapper.mpaToAddressDto(addressEntityRes);
+    }
+
     public AddressDto addAddress(AddressDto addressDto){
-        AddressEntity addressEntity = addressMapper.mapAddressDtoToAddressEntity(addressDto);
+        AddressEntity addressEntity = addressMapper.mapToAddressEntity(addressDto);
         addressEntity = addressRepository.save(addressEntity);
         return addressMapper.mpaToAddressDto(addressEntity);
     }

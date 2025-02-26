@@ -34,17 +34,14 @@ public class AddressRepositoryImpl implements ICrud<AddressEntity> {
     }
 
     @Override
-    public void deleteAll() {
-
-    }
+    public void deleteAll() {}
 
     @Override
     public void deleteById(int id) {
-
     }
 
     @Override
     public AddressEntity update(AddressEntity addressEntity) {
-        return null;
+        return addressRepositoryJpa.save(addressEntity);
     }
 }
