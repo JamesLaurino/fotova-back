@@ -4,6 +4,8 @@ import com.fotova.entity.AddressEntity;
 import com.fotova.repository.ICrud;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -38,10 +40,20 @@ public class AddressRepositoryImpl implements ICrud<AddressEntity> {
 
     @Override
     public void deleteById(int id) {
+        addressRepositoryJpa.deleteById(id);
     }
 
     @Override
     public AddressEntity update(AddressEntity addressEntity) {
         return addressRepositoryJpa.save(addressEntity);
+    }
+
+    @Transactional
+    public void updateClientAddressId(Integer clientAddressId) {
+        String sql = "UPDATE client_entity SET address_id = NULL WHERE address_id = ?1";
+
+        Query query = entityManager.createNativeQuery(sql);
+        query.setParameter(1, clientAddressId);
+        query.executeUpdate();
     }
 }

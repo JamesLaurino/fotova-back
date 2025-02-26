@@ -27,6 +27,11 @@ public class AddressService {
         return addressMapper.mpaToAddressDto(addressEntity);
     }
 
+    public void deleteAddressById(int id){
+        addressRepository.updateClientAddressId(id);
+        addressRepository.deleteById(id);
+    }
+
     public AddressDto updateAddress(AddressDto addressDto){
         AddressEntity addressEntity = addressMapper.mapToAddressEntity(addressDto);
         AddressEntity addressEntityRes= addressRepository.update(addressEntity);
