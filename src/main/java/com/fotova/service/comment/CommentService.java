@@ -20,6 +20,12 @@ public class CommentService {
         return commentMapper.mapToCommentDtoList(commentRepositoryImpl.findAll());
     }
 
+    public CommentDto saveComment(CommentDto commentDto) {
+        CommentEntity commentEntity = commentMapper.mapToCommentEntity(commentDto);
+        commentEntity = commentRepositoryImpl.save(commentEntity);
+        return commentMapper.mapToCommentDto(commentEntity);
+    }
+
     public CommentDto updateComment(CommentDto commentDto) {
         CommentEntity commentEntity = commentRepositoryImpl.update(commentMapper.mapToCommentEntity(commentDto));
         return commentMapper.mapToCommentDto(commentEntity);

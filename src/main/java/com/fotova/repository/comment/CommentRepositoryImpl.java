@@ -25,7 +25,7 @@ public class CommentRepositoryImpl implements ICrud<CommentEntity> {
 
     @Override
     public CommentEntity save(CommentEntity commentEntity) {
-        return null;
+        return commentRepositoryJpa.save(commentEntity);
     }
 
     @Override
