@@ -43,4 +43,10 @@ public class SupplierService {
         return supplierMapper.mapToDto(supplierEntity);
     }
 
+    public void delete(Integer id){
+        supplierRepositoryImpl.updateSupplierAddressId(id);
+        supplierRepositoryImpl.updateSupplierProductId(id);
+        supplierRepositoryImpl.deleteById(id);
+    }
+
 }
