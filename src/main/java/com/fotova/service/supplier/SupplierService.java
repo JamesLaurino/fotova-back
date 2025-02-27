@@ -1,6 +1,7 @@
 package com.fotova.service.supplier;
 
 import com.fotova.dto.supplier.SupplierDto;
+import com.fotova.entity.SupplierEntity;
 import com.fotova.repository.supplier.SupplierRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,5 +19,10 @@ public class SupplierService {
 
     public List<SupplierDto> findAll(){
         return supplierMapper.mapToDtoList(supplierRepositoryImpl.findAll());
+    }
+
+    public SupplierDto findById(Integer id){
+        SupplierEntity supplierEntity = supplierRepositoryImpl.findById(id);
+        return supplierMapper.mapToDto(supplierEntity);
     }
 }

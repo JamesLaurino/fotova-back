@@ -15,7 +15,7 @@ public class SupplierRepositoryImpl implements ICrud<SupplierEntity> {
 
     @Override
     public SupplierEntity findById(int id) {
-        return null;
+        return supplierRepository.findById(id).orElse(null);
     }
 
     @Override
