@@ -15,7 +15,7 @@ public class CommentRepositoryImpl implements ICrud<CommentEntity> {
 
     @Override
     public CommentEntity findById(int id) {
-        return null;
+        return commentRepositoryJpa.findById(id).orElse(null);
     }
 
     @Override
