@@ -37,4 +37,10 @@ public class SupplierService {
         return supplierDtoRes;
     }
 
+    public SupplierDto update(SupplierDto supplierDto){
+        SupplierEntity supplierEntity = supplierMapper.mapToEntity(supplierDto);
+        supplierEntity = supplierRepositoryImpl.save(supplierEntity);
+        return supplierMapper.mapToDto(supplierEntity);
+    }
+
 }

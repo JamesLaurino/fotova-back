@@ -36,6 +36,6 @@ public class SupplierRepositoryImpl implements ICrud<SupplierEntity> {
 
     @Override
     public SupplierEntity update(SupplierEntity supplierEntity) {
-        return null;
+        return supplierRepository.save(supplierEntity);
     }
 }
