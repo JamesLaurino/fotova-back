@@ -25,18 +25,14 @@ public class SupplierRepositoryImpl implements ICrud<SupplierEntity> {
 
     @Override
     public SupplierEntity save(SupplierEntity supplierEntity) {
-        return null;
+        return supplierRepository.save(supplierEntity);
     }
 
     @Override
-    public void deleteAll() {
-
-    }
+    public void deleteAll() {}
 
     @Override
-    public void deleteById(int id) {
-
-    }
+    public void deleteById(int id) {}
 
     @Override
     public SupplierEntity update(SupplierEntity supplierEntity) {

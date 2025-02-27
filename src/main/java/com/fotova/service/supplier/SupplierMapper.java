@@ -3,6 +3,8 @@ package com.fotova.service.supplier;
 import com.fotova.dto.supplier.SupplierAddressDto;
 import com.fotova.dto.supplier.SupplierDto;
 import com.fotova.dto.supplier.SupplierProductDto;
+import com.fotova.entity.AddressEntity;
+import com.fotova.entity.ProductEntity;
 import com.fotova.entity.SupplierEntity;
 import org.springframework.stereotype.Service;
 
@@ -64,4 +66,28 @@ public class SupplierMapper {
 
         return supplierDtoList;
     }
+
+    public SupplierEntity mapToEntity(SupplierDto supplierDto){
+        SupplierEntity supplierEntity = new SupplierEntity();
+
+        if(supplierDto.getId() != null){
+            supplierEntity.setId(supplierDto.getId());
+        }
+
+        supplierEntity.setRegistrationNumber(supplierDto.getRegistrationNumber());
+
+        if(supplierDto.getSupplierAddressDto() != null){
+            AddressEntity addressEntity = new AddressEntity();
+            addressEntity.setId(supplierDto.getSupplierAddressDto().getId());
+            supplierEntity.setAddress(addressEntity);
+        }
+
+        if(supplierDto.getSupplierProductDto() != null){
+            ProductEntity productEntity = new ProductEntity();
+            productEntity.setId(supplierDto.getSupplierProductDto().getId());
+            supplierEntity.setProduct(productEntity);
+        }
+        return supplierEntity;
+    }
+
 }

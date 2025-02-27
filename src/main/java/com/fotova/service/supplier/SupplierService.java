@@ -25,4 +25,16 @@ public class SupplierService {
         SupplierEntity supplierEntity = supplierRepositoryImpl.findById(id);
         return supplierMapper.mapToDto(supplierEntity);
     }
+
+    public SupplierDto save(SupplierDto supplierDto){
+        SupplierEntity supplierEntity = supplierMapper.mapToEntity(supplierDto);
+        supplierEntity = supplierRepositoryImpl.save(supplierEntity);
+
+        SupplierDto supplierDtoRes = new SupplierDto();
+        supplierDtoRes.setId(supplierEntity.getId());
+        supplierDtoRes.setRegistrationNumber(supplierEntity.getRegistrationNumber());
+
+        return supplierDtoRes;
+    }
+
 }
