@@ -30,6 +30,7 @@ public class CommentMapper {
         commentDto.setBody(commentEntity.getBody());
         commentDto.setHeader(commentEntity.getHeader());
         commentDto.setCreateAt(commentEntity.getCreateAt());
+        commentDto.setUpdateAt(commentEntity.getUpdateAt());
 
         if(commentEntity.getClientEntity() != null) {
 
@@ -44,5 +45,30 @@ public class CommentMapper {
         }
 
         return commentDto;
+    }
+
+    public CommentEntity mapToCommentEntity(CommentDto commentDto) {
+
+        CommentEntity commentEntity = new CommentEntity();
+        if(commentDto.getId() != null)
+        {
+            commentEntity.setId(commentDto.getId());
+        } else {
+            commentEntity.setId(null);
+        }
+
+        commentEntity.setHeader(commentDto.getHeader());
+        commentEntity.setBody(commentDto.getBody());
+
+        if(commentDto.getCreateAt() != null)
+        {
+            commentEntity.setCreateAt(commentDto.getCreateAt());
+        }
+        else {
+            commentEntity.setCreateAt(null);
+        }
+
+        commentEntity.setUpdateAt(commentDto.getUpdateAt());
+        return commentEntity;
     }
 }

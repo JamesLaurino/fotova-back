@@ -26,6 +26,9 @@ public class CommentEntity {
     @Column(name = "createAt")
     private Instant createAt;
 
+    @Column(name = "updateAt")
+    private Instant updateAt;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
     private ClientEntity clientEntity;

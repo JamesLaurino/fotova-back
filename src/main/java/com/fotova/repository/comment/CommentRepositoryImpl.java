@@ -36,6 +36,6 @@ public class CommentRepositoryImpl implements ICrud<CommentEntity> {
 
     @Override
     public CommentEntity update(CommentEntity commentEntity) {
-        return null;
+        return commentRepositoryJpa.save(commentEntity);
     }
 }
