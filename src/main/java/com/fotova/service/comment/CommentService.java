@@ -10,6 +10,7 @@ import java.util.List;
 
 @Service
 public class CommentService {
+
     @Autowired
     private CommentRepositoryImpl commentRepositoryImpl;
 
@@ -24,6 +25,12 @@ public class CommentService {
         CommentEntity commentEntity = commentMapper.mapToCommentEntity(commentDto);
         commentEntity = commentRepositoryImpl.save(commentEntity);
         return commentMapper.mapToCommentDto(commentEntity);
+    }
+
+    public void deleteCommentById(int id) {
+        commentRepositoryImpl.updateCommentClientId(id);
+        commentRepositoryImpl.updateClientCommentId(id);
+        commentRepositoryImpl.deleteById(id);
     }
 
     public CommentDto updateComment(CommentDto commentDto) {
