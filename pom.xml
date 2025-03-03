@@ -120,9 +120,4 @@
       <version>2.18.2</version>
     </dependency>
   </dependencies>
-
-  <build>
-    <finalName>spring-1.0.0-snapshot.jar</finalName>
-  </build>
-
 </project>
