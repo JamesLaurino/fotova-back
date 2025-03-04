@@ -10,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -51,7 +52,6 @@ public class ClientEntity {
     @JoinColumn(name = "address_id")
     private AddressEntity address;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "comment_id")
-    private CommentEntity comment;
+    @OneToMany(mappedBy = "clientEntity", cascade = CascadeType.ALL, orphanRemoval = false)
+    private List<CommentEntity> commentEntities;
 }

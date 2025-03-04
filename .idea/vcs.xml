@@ -6,6 +6,7 @@
     <mapping directory="$PROJECT_DIR$/../controller-fotova" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../database" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../docker-compose" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../frontend-fotova" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../kiebase-fotova" vcs="Git" />
   </component>
 </project>

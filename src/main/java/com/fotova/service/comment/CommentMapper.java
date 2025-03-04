@@ -1,6 +1,6 @@
 package com.fotova.service.comment;
 
-import com.fotova.dto.comment.ClientCommentDto;
+import com.fotova.dto.comment.CommentClientDto;
 import com.fotova.dto.comment.CommentDto;
 import com.fotova.entity.CommentEntity;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,7 @@ public class CommentMapper {
 
         if(commentEntity.getClientEntity() != null) {
 
-            ClientCommentDto clientCommentDto = new ClientCommentDto();
+            CommentClientDto clientCommentDto = new CommentClientDto();
             clientCommentDto.setClientId(commentEntity.getClientEntity().getId());
             clientCommentDto.setEmail(commentEntity.getClientEntity().getEmail());
             clientCommentDto.setUsername(commentEntity.getClientEntity().getUsername());
