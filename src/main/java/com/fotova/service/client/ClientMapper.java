@@ -1,8 +1,10 @@
 package com.fotova.service.client;
 
+import com.fotova.dto.address.AddressDto;
 import com.fotova.dto.client.ClientAddressDto;
 import com.fotova.dto.client.ClientCommentDto;
 import com.fotova.dto.client.ClientDto;
+import com.fotova.entity.AddressEntity;
 import com.fotova.entity.ClientEntity;
 import com.fotova.entity.CommentEntity;
 import org.springframework.stereotype.Service;
@@ -67,6 +69,23 @@ public class ClientMapper {
         }
 
         return clientDto;
+    }
+
+    public AddressEntity mapAddressToAddressEntity(AddressDto addressDto) {
+
+        AddressEntity addressEntity = new AddressEntity();
+
+        if(addressDto.getId() != null)
+        {
+            addressEntity.setId(addressDto.getId());
+        }
+
+        addressEntity.setStreet(addressDto.getStreet());
+        addressEntity.setCity(addressDto.getCity());
+        addressEntity.setNumber(addressDto.getNumber());
+        addressEntity.setCountry(addressDto.getCountry());
+
+        return addressEntity;
     }
 
 }
