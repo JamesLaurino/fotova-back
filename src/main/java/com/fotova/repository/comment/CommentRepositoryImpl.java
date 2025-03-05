@@ -49,6 +49,16 @@ public class CommentRepositoryImpl implements ICrud<CommentEntity> {
     }
 
     @Transactional
+    public void setCommentClientId(Integer clientId, Integer commentId) {
+        String sql = "UPDATE comment_entity SET client_id = ?1 WHERE ID = ?2";
+
+        Query query = entityManager.createNativeQuery(sql);
+        query.setParameter(1, clientId);
+        query.setParameter(2, commentId);
+        query.executeUpdate();
+    }
+
+    @Transactional
     public void updateCommentClientId(Integer clientId) {
         String sql = "UPDATE comment_entity SET client_id = NULL WHERE client_id = ?1";
 

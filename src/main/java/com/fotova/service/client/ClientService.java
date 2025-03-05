@@ -2,11 +2,15 @@ package com.fotova.service.client;
 
 import com.fotova.dto.address.AddressDto;
 import com.fotova.dto.client.ClientDto;
+import com.fotova.dto.comment.CommentDto;
 import com.fotova.entity.AddressEntity;
 import com.fotova.entity.ClientEntity;
+import com.fotova.entity.CommentEntity;
 import com.fotova.repository.address.AddressRepositoryImpl;
 import com.fotova.repository.client.ClientRepositoryImpl;
+import com.fotova.repository.comment.CommentRepositoryImpl;
 import com.fotova.service.address.AddressMapper;
+import com.fotova.service.comment.CommentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,10 +26,16 @@ public class ClientService {
     private AddressRepositoryImpl addressRepositoryImpl;
 
     @Autowired
+    private CommentRepositoryImpl commentRepositoryImpl;
+
+    @Autowired
     private ClientMapper clientMapper;
 
     @Autowired
     private AddressMapper addressMapper;
+
+    @Autowired
+    private CommentMapper commentMapper;
 
     public List<ClientDto> getAllClients() {
         return clientMapper.maptoClientDtoList(clientRepositoryImpl.findAll());
@@ -60,5 +70,12 @@ public class ClientService {
         clientRepositoryImpl.save(clientEntity);
 
         return clientMapper.mapClientToClientDto(clientRepositoryImpl.findById(clientId));
+    }
+
+    public String addCommentClient(Integer clientId, CommentDto comment) {
+        CommentEntity commentEntity = commentMapper.mapToCommentEntity(comment);
+        commentEntity = commentRepositoryImpl.save(commentEntity);
+        commentRepositoryImpl.setCommentClientId(clientId, commentEntity.getId());
+        return "comment added successfully to client : " +  clientId;
     }
 }
