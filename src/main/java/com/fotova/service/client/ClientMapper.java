@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ClientMapper {
@@ -88,4 +89,10 @@ public class ClientMapper {
         return addressEntity;
     }
 
+    public ClientEntity anonymization(ClientEntity clientEntity) {
+        clientEntity.setUsername(UUID.randomUUID().toString());
+        clientEntity.setEmail(UUID.randomUUID().toString());
+        clientEntity.setPassword(UUID.randomUUID().toString());
+        return clientEntity;
+    }
 }

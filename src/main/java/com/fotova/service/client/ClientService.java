@@ -78,4 +78,15 @@ public class ClientService {
         commentRepositoryImpl.setCommentClientId(clientId, commentEntity.getId());
         return "comment added successfully to client : " +  clientId;
     }
+
+    public String deleteClientById(Integer clientId) {
+        ClientEntity clientEntity = clientRepositoryImpl.clientAnonymization(clientId);
+        if(clientEntity != null) {
+            clientEntity = clientMapper.anonymization(clientEntity);
+            clientRepositoryImpl.save(clientEntity);
+            clientRepositoryImpl.updateClientAddress(clientEntity.getId());
+            return "client deleted successfully : " +  clientId;
+        }
+        return null;
+    }
 }
