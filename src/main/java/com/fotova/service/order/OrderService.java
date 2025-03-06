@@ -1,10 +1,12 @@
 package com.fotova.service.order;
 
 import com.fotova.dto.order.OrderDto;
+import com.fotova.dto.orderProduct.OrderProductDto;
 import com.fotova.dto.stripe.StripeProductRequest;
 import com.fotova.entity.ClientEntity;
 import com.fotova.entity.OrderEntity;
 import com.fotova.repository.client.ClientRepositoryImpl;
+import com.fotova.repository.order.OrderProductRepositoryImpl;
 import com.fotova.repository.order.OrderRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,9 @@ public class OrderService {
 
     @Autowired
     private OrderRepositoryImpl orderRepository;
+
+    @Autowired
+    private OrderProductRepositoryImpl orderProductRepository;
 
     @Autowired
     private ClientRepositoryImpl clientRepository;
@@ -51,5 +56,9 @@ public class OrderService {
         }
 
         return orderMapper.mapToOrderDto(orderRepository.save(orderEntity));
+    }
+
+    public List<OrderProductDto> getOrderProductByEmail(String email) {
+        return orderProductRepository.getOrderProductByEmail(email);
     }
 }
