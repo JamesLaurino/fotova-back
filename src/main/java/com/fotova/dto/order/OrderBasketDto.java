@@ -13,4 +13,5 @@ public class OrderBasketDto {
     private String id;
     private Integer productId;
     private Integer quantity;
+    private String email;
 }
