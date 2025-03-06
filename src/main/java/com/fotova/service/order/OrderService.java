@@ -1,6 +1,7 @@
 package com.fotova.service.order;
 
 import com.fotova.dto.order.OrderDto;
+import com.fotova.dto.orderProduct.OrderProductBillingDto;
 import com.fotova.dto.orderProduct.OrderProductDto;
 import com.fotova.dto.stripe.StripeProductRequest;
 import com.fotova.entity.ClientEntity;
@@ -60,5 +61,11 @@ public class OrderService {
 
     public List<OrderProductDto> getOrderProductByEmail(String email) {
         return orderProductRepository.getOrderProductByEmail(email);
+    }
+
+    public OrderProductBillingDto  getOrderProductBillingByEmail(String email) {
+        List<OrderProductDto> productDtoList = orderProductRepository.getOrderProductByEmail(email);
+
+        return orderMapper.mapToOrderProductBillingDto(productDtoList);
     }
 }

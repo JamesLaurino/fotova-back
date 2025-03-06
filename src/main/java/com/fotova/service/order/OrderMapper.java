@@ -2,8 +2,13 @@ package com.fotova.service.order;
 
 import com.fotova.dto.order.OrderClientDto;
 import com.fotova.dto.order.OrderDto;
+import com.fotova.dto.orderProduct.OrderBillingDto;
+import com.fotova.dto.orderProduct.OrderProductBillingDto;
+import com.fotova.dto.orderProduct.OrderProductDto;
 import com.fotova.entity.ClientEntity;
 import com.fotova.entity.OrderEntity;
+import com.fotova.service.order.helper.OrderHelper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,6 +17,9 @@ import java.util.List;
 
 @Service
 public class OrderMapper {
+
+    @Autowired
+    private OrderHelper orderHelper;
 
     public List<OrderDto> mapToOrderDtoList(List<OrderEntity> orderEntities){
         List<OrderDto> orderDtoList = new ArrayList<>();
@@ -49,5 +57,27 @@ public class OrderMapper {
         orderEntity.setClient(clientEntity);
 
         return orderEntity;
+    }
+
+    public OrderProductBillingDto  mapToOrderProductBillingDto(List<OrderProductDto> productDtoList)
+    {
+        OrderProductBillingDto  orderProductBillingDto = new OrderProductBillingDto();
+        orderProductBillingDto.setOrderId(productDtoList.get(0).getOrderId());
+        orderProductBillingDto.setCreationDate(productDtoList.get(0).getCreationDate());
+        orderProductBillingDto.setTotal(orderHelper.computeBillingTotal(productDtoList));
+
+        List<OrderBillingDto> productBillingDtoList  = new ArrayList<>();
+
+        for(OrderProductDto orderProductDto : productDtoList){
+            OrderBillingDto orderBillingDto = new OrderBillingDto();
+            orderBillingDto.setName(orderProductDto.getName());
+            orderBillingDto.setPrice(orderProductDto.getPrice());
+            orderBillingDto.setQuantity(orderProductDto.getQuantity());
+            productBillingDtoList.add(orderBillingDto);
+        }
+
+        orderProductBillingDto.setProductBillingDtoList(productBillingDtoList);
+
+        return orderProductBillingDto;
     }
 }
