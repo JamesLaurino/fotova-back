@@ -28,4 +28,9 @@ public class OrderService {
         List<OrderEntity> orderEntityList = orderRepository.findAll();
         return orderMapper.mapToOrderDtoList(orderEntityList);
     }
+
+    public OrderDto getOrderById(Integer orderId) {
+        OrderEntity orderEntity = orderRepository.findById(orderId);
+        return orderMapper.mapToOrderDto(orderEntity);
+    }
 }

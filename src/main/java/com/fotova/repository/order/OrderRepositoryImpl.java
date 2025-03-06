@@ -15,7 +15,7 @@ public class OrderRepositoryImpl implements ICrud<OrderEntity> {
 
     @Override
     public OrderEntity findById(int id) {
-        return null;
+        return orderRepositoryJpa.findById(id).orElse(null);
     }
 
     @Override
