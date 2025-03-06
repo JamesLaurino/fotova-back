@@ -25,7 +25,7 @@ public class OrderRepositoryImpl implements ICrud<OrderEntity> {
 
     @Override
     public OrderEntity save(OrderEntity orderEntity) {
-        return null;
+        return orderRepositoryJpa.save(orderEntity);
     }
 
     @Override

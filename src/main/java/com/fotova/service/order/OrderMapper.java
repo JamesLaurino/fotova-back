@@ -2,6 +2,7 @@ package com.fotova.service.order;
 
 import com.fotova.dto.order.OrderClientDto;
 import com.fotova.dto.order.OrderDto;
+import com.fotova.entity.ClientEntity;
 import com.fotova.entity.OrderEntity;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Service
 public class OrderMapper {
+
     public List<OrderDto> mapToOrderDtoList(List<OrderEntity> orderEntities){
         List<OrderDto> orderDtoList = new ArrayList<>();
 
@@ -23,7 +25,6 @@ public class OrderMapper {
 
     public OrderDto mapToOrderDto(OrderEntity orderEntity){
         OrderDto orderDto = new OrderDto();
-
         orderDto.setId(orderEntity.getId());
         orderDto.setCreateAt(orderEntity.getCreateAt());
 
@@ -34,5 +35,19 @@ public class OrderMapper {
             orderDto.setClient(orderClientDto);
         }
         return orderDto;
+    }
+
+    public OrderEntity mapToOrderEntity(OrderDto orderDto, Integer clientId){
+
+        OrderEntity orderEntity = new OrderEntity();
+        orderEntity.setCreateAt(orderDto.getCreateAt());
+
+        ClientEntity clientEntity = new ClientEntity();
+        clientEntity.setId(clientId);
+        clientEntity.setEmail(orderDto.getClient().getEmail());
+
+        orderEntity.setClient(clientEntity);
+
+        return orderEntity;
     }
 }
