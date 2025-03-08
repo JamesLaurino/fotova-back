@@ -1,14 +1,13 @@
 package com.fotova.dto.order;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.redis.core.RedisHash;
 
 
 @Getter
 @Setter
-@AllArgsConstructor @NoArgsConstructor
+@RedisHash("StudentRedis")
 public class OrderBasketDto {
     private String id;
     private Integer productId;
