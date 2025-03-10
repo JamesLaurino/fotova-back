@@ -1,6 +1,9 @@
 package com.fotova.service.file;
 
 import com.fotova.dto.file.FileDto;
+import com.fotova.dto.file.FileResponse;
+import com.fotova.dto.file.FileResponseDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -17,12 +20,17 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class FileService {
 
     @Value("${file.upload.path}")
     private String pathFile;
+
+    @Autowired
+    private FileMapper fileMapper;
 
     public String uploadFile(MultipartFile file) throws IOException {
 
@@ -74,5 +82,29 @@ public class FileService {
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(contentType != null ? contentType : "application/octet-stream"))
                 .body(resource);
+    }
+
+    public List<FileResponseDto> getAllFilesContent() {
+        List<FileResponse> filesList = new ArrayList<>();
+
+        try (Stream<Path> paths = Files.walk(Paths.get(pathFile), 1)) { // 1 = Ne pas parcourir les sous-dossiers
+            filesList = paths
+                    .filter(Files::isRegularFile) // Ne prendre que les fichiers
+                    .map(path -> {
+                        try {
+                            Resource resource = new UrlResource(path.toUri());
+                            return new FileResponse(path.getFileName().toString(), resource);
+                        } catch (IOException e) {
+                            return null;
+                        }
+                    })
+                    .filter(file -> file != null)
+                    .collect(Collectors.toList());
+
+            return  fileMapper.mapToFileResponseDto(filesList);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 }
