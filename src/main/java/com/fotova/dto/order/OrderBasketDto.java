@@ -10,6 +10,7 @@ import org.springframework.data.redis.core.RedisHash;
 @RedisHash("StudentRedis")
 public class OrderBasketDto {
     private String id;
+    private String verificationCode;
     private Integer productId;
     private Integer quantity;
     private String email;

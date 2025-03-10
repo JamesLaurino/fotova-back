@@ -4,6 +4,7 @@ import com.fotova.dto.order.OrderBasketDto;
 import com.fotova.dto.order.OrderDto;
 import com.fotova.dto.orderProduct.OrderProductBillingDto;
 import com.fotova.dto.orderProduct.OrderProductDto;
+import com.fotova.dto.stripe.StripOrderBasket;
 import com.fotova.dto.stripe.StripeProductRequest;
 import com.fotova.entity.ClientEntity;
 import com.fotova.entity.OrderEntity;
@@ -18,9 +19,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
@@ -81,42 +84,68 @@ public class OrderService {
         return orderMapper.mapToOrderProductBillingDto(productDtoList);
     }
 
-    private Boolean checkOrderBasket(String uuid) {
+    public void cleanOrderBasketByUUID(String uuid) {
 
-        for(OrderBasketDto orderBasketDto : ValidationOrderService.orderBasketDtoList) {
-            if(orderBasketDto.getId().equals(uuid)) {
-                return true;
+        List<OrderBasketDto> orderBasketDtoUUID = getOrderBasketByUUID(uuid);
+
+        for(OrderBasketDto orderBasketDto : orderBasketDtoUUID) {
+            if(orderBasketDto.getVerificationCode().equals(uuid)) {
+                orderBasketRepository.deleteOrderBasket(orderBasketDto);
             }
         }
+    }
 
-        return false;
+    public void fillOrderBasketWithStripeRequest(StripeProductRequest productRequest) {
+        List<OrderBasketDto> orderBasketDtoList = orderMapper.mapOrderBasketWithStripeRequest(productRequest);
+        orderBasketRepository.saveAllOrderBasket(orderBasketDtoList);
+    }
+
+    private List<OrderBasketDto> getOrderBasketByUUID(String uuid) {
+
+        List<OrderBasketDto> orderBasketDtoList = orderBasketRepository.getAllOrderBasket();
+
+        return orderBasketDtoList.stream()
+                .filter(orderBasketDto -> {
+
+                    if(orderBasketDto.getVerificationCode() != null && orderBasketDto.getVerificationCode().equals(uuid)) {
+                        return true;
+                    }
+
+                    return false;
+                })
+                .collect(Collectors.toList());
+    }
+
+    private Boolean checkOrderBasket(String uuid) {
+
+        return getOrderBasketByUUID(uuid).isEmpty();
     }
 
     public String createOrderAfterShipment(String uuid) {
 
         Boolean checkOrder = this.checkOrderBasket(uuid);
+        List<OrderBasketDto> orderBasketDtoUUID = getOrderBasketByUUID(uuid);
 
-        if(checkOrder) {
+        if(!checkOrder) {
             OrderEntity orderEntity = new OrderEntity();
-            String email = ValidationOrderService.orderBasketDtoList.get(0).getEmail();
+            String email = orderBasketDtoUUID.get(0).getEmail();
             Optional<ClientEntity> clientEntity = clientRepository.findFirstByEmail(email);
             clientEntity.ifPresent(orderEntity::setClient);
 
             orderEntity.setCreateAt(Instant.now());
             OrderEntity orderCreated = orderRepository.save(orderEntity);
 
-            // TODO ADAPT WITH REDIS
-            for(OrderBasketDto temp : ValidationOrderService.orderBasketDtoList) {
+            for(OrderBasketDto orderBasketDto : orderBasketDtoUUID) {
 
-                if(uuid.equals(temp.getId()))
+                if(uuid.equals(orderBasketDto.getVerificationCode()))
                 {
                     OrderProductEntity orderProductEntity = new OrderProductEntity();
-                    ProductEntity productEntity = productRepository.findById(temp.getProductId());
+                    ProductEntity productEntity = productRepository.findById(orderBasketDto.getProductId());
 
                     orderProductEntity.setOrder(orderCreated);
 
                     orderProductEntity.setProduct(productEntity);
-                    orderProductEntity.setQuantityProduct(temp.getQuantity());
+                    orderProductEntity.setQuantityProduct(orderBasketDto.getQuantity());
 
                     orderProductRepository.save(orderProductEntity);
                 }

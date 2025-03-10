@@ -1,10 +1,13 @@
 package com.fotova.service.order;
 
+import com.fotova.dto.order.OrderBasketDto;
 import com.fotova.dto.order.OrderClientDto;
 import com.fotova.dto.order.OrderDto;
 import com.fotova.dto.orderProduct.OrderBillingDto;
 import com.fotova.dto.orderProduct.OrderProductBillingDto;
 import com.fotova.dto.orderProduct.OrderProductDto;
+import com.fotova.dto.stripe.StripOrderBasket;
+import com.fotova.dto.stripe.StripeProductRequest;
 import com.fotova.entity.ClientEntity;
 import com.fotova.entity.OrderEntity;
 import com.fotova.service.order.helper.OrderHelper;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 @Service
@@ -79,5 +83,24 @@ public class OrderMapper {
         orderProductBillingDto.setProductBillingDtoList(productBillingDtoList);
 
         return orderProductBillingDto;
+    }
+
+    public List<OrderBasketDto> mapOrderBasketWithStripeRequest(StripeProductRequest productRequest) {
+
+        String uuid = productRequest.getName();
+        String email = productRequest.getEmail();
+        List<OrderBasketDto> orderBasketDtoList = new ArrayList<>();
+
+        for(StripOrderBasket stripOrderBasket:productRequest.getProductBasket()) {
+            OrderBasketDto orderBasketDto = new OrderBasketDto();
+            orderBasketDto.setId(UUID.randomUUID().toString());
+            orderBasketDto.setVerificationCode(uuid);
+            orderBasketDto.setProductId(stripOrderBasket.getProductId());
+            orderBasketDto.setQuantity(stripOrderBasket.getQuantity());
+            orderBasketDto.setEmail(email);
+            orderBasketDtoList.add(orderBasketDto);
+        }
+
+        return orderBasketDtoList;
     }
 }
