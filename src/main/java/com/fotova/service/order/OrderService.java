@@ -74,12 +74,12 @@ public class OrderService {
         return orderMapper.mapToOrderDto(orderRepository.save(orderEntity));
     }
 
-    public List<OrderProductDto> getOrderProductByEmail(String email) {
-        return orderProductRepository.getOrderProductByEmail(email);
+    public List<OrderProductDto> getOrderProductByEmail(String email, Integer orderId) {
+        return orderProductRepository.getOrderProductByEmail(email,orderId);
     }
 
-    public OrderProductBillingDto  getOrderProductBillingByEmail(String email) {
-        List<OrderProductDto> productDtoList = orderProductRepository.getOrderProductByEmail(email);
+    public OrderProductBillingDto  getOrderProductBillingByEmail(String email,Integer orderId) {
+        List<OrderProductDto> productDtoList = orderProductRepository.getOrderProductByEmail(email,orderId);
 
         return orderMapper.mapToOrderProductBillingDto(productDtoList);
     }

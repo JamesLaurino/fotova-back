@@ -23,7 +23,7 @@ public class OrderProductRepositoryImpl implements ICrud<OrderProductEntity> {
     private EntityManager entityManager;
 
     @Transactional
-    public List<OrderProductDto> getOrderProductByEmail(String email) {
+    public List<OrderProductDto> getOrderProductByEmail(String email, Integer orderId) {
 
         String sql = "SELECT\n" +
                 "    order_entity.id,\n" +
@@ -40,10 +40,12 @@ public class OrderProductRepositoryImpl implements ICrud<OrderProductEntity> {
                 "WHERE product_entity.id = order_product_entity.product_id\n" +
                 "AND order_entity.id = order_product_entity.order_id\n" +
                 "AND client_entity.id = order_entity.client_id\n" +
-                "AND client_entity.email = ?1";
+                "AND client_entity.email = ?1\n" +
+                "AND order_entity.id = ?2";
 
         Query query = entityManager.createNativeQuery(sql);
         query.setParameter(1, email);
+        query.setParameter(2, orderId);
 
         @SuppressWarnings("unchecked")
         List<Object[]> results = query.getResultList();
