@@ -108,11 +108,7 @@ public class OrderService {
 
         return orderBasketDtoList.stream()
                 .filter(orderBasketDto -> {
-
-                    if(orderBasketDto.getVerificationCode() != null && orderBasketDto.getVerificationCode().equals(uuid)) {
-                        return true;
-                    }
-
+                    if(orderBasketDto.getVerificationCode() != null && orderBasketDto.getVerificationCode().equals(uuid)) {return true;}
                     return false;
                 })
                 .collect(Collectors.toList());
@@ -158,5 +154,24 @@ public class OrderService {
 
     public void sendRabbitMQOrder(String orderId) {
         rabbitMQProducer.sendMessage(orderId);
+    }
+
+    public void checkOrderQuantity(String uuid) {
+
+        List<OrderBasketDto> orderBasketDtoList = this.getOrderBasketByUUID(uuid);
+
+        for(OrderBasketDto orderBasketDto : orderBasketDtoList) {
+            Integer productQuantity = orderBasketDto.getQuantity();
+            Integer productId = orderBasketDto.getProductId();
+
+            ProductEntity productEntity = productRepository.findById(productId);
+            if(productEntity == null) {
+                throw new RuntimeException("Product does not exist for id: " + productId);
+            }
+
+            if(productEntity.getQuantity() < productQuantity) {
+                throw new RuntimeException("Product quantity is greeter than product stock");
+            }
+        }
     }
 }
