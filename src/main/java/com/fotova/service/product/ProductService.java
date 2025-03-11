@@ -71,7 +71,7 @@ public class ProductService
         product.setName(productDto.getName());
         product.setPrice(productDto.getPrice());
         product.setQuantity(productDto.getQuantity());
-        rabbitMQProducer.sendMessage(product);
+        rabbitMQProducer.sendMessage(product.toString());
     }
 
 }

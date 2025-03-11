@@ -4,7 +4,6 @@ import com.fotova.dto.order.OrderBasketDto;
 import com.fotova.dto.order.OrderDto;
 import com.fotova.dto.orderProduct.OrderProductBillingDto;
 import com.fotova.dto.orderProduct.OrderProductDto;
-import com.fotova.dto.stripe.StripOrderBasket;
 import com.fotova.dto.stripe.StripeProductRequest;
 import com.fotova.entity.ClientEntity;
 import com.fotova.entity.OrderEntity;
@@ -15,11 +14,11 @@ import com.fotova.repository.redis.OrderBasketRepositoryImpl;
 import com.fotova.repository.order.OrderProductRepositoryImpl;
 import com.fotova.repository.order.OrderRepositoryImpl;
 import com.fotova.repository.product.ProductRepositoryImpl;
+import com.fotova.service.RabbitMQProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -45,6 +44,9 @@ public class OrderService {
 
     @Autowired
     private OrderMapper orderMapper;
+
+    @Autowired
+    private RabbitMQProducer rabbitMQProducer;
 
     public StripeProductRequest setStripeProductRequestName(StripeProductRequest stripeProductRequest) {
         stripeProductRequest.setName(UUID.randomUUID().toString());
@@ -117,7 +119,6 @@ public class OrderService {
     }
 
     private Boolean checkOrderBasket(String uuid) {
-
         return getOrderBasketByUUID(uuid).isEmpty();
     }
 
@@ -150,8 +151,12 @@ public class OrderService {
                     orderProductRepository.save(orderProductEntity);
                 }
             }
-            return "Order created successfully with id : " + orderCreated.getId();
+            return orderCreated.getId().toString();
         }
         return "Order not created";
+    }
+
+    public void sendRabbitMQOrder(String orderId) {
+        rabbitMQProducer.sendMessage(orderId);
     }
 }
