@@ -3,11 +3,13 @@ package com.fotova.service.product;
 
 import com.drools.dto.product.ProductDtoDrl;
 import com.fotova.dto.ProductDtoAmq;
+import com.fotova.dto.file.FileResponseDto;
 import com.fotova.dto.product.ProductDtoBack;
 import com.drools.service.BusinessProductDroolsService;
 import com.fotova.entity.ProductEntity;
 import com.fotova.repository.product.ProductRepositoryImpl;
 import com.fotova.service.RabbitMQProducer;
+import com.fotova.service.file.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +30,9 @@ public class ProductService
     @Autowired
     private RabbitMQProducer rabbitMQProducer;
 
+    @Autowired
+    private FileService fileService;
+
     public ProductDtoBack saveProduct(ProductDtoBack product, final int categoryId) {
 
         ProductEntity productEntity = productMapper.mapToProductEntity(product);
@@ -37,7 +42,9 @@ public class ProductService
 
     public List<ProductDtoBack> getAllProducts() {
         List<ProductEntity> productEntityList = productRepository.findAll();
-        return productMapper.mapToProductDtoBackList(productEntityList);
+        List<FileResponseDto> filesContent = fileService.getAllFilesContent();
+        List<ProductDtoBack> productDtoBackList = productMapper.mapToProductDtoBackList(productEntityList);
+        return productMapper.setFileUrlToProductDtoBackList(filesContent,productDtoBackList);
     }
 
     public ProductDtoBack getProductById(int productId) {
