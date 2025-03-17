@@ -23,10 +23,10 @@ public class CommentEntity {
     @Column(name = "body")
     private String body;
 
-    @Column(name = "createAt")
+    @Column(name = "created_at")
     private Instant createAt;
 
-    @Column(name = "updateAt")
+    @Column(name = "updated_at")
     private Instant updateAt;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -7,7 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-//@Table(name = "t_order_product", schema = "first_db")
 public class OrderProductEntity {
     @Id
     @Column(name = "id", nullable = false)
