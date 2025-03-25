@@ -1,10 +1,9 @@
 package com.fotova.repository.product;
 
-import com.fotova.dto.category.CategoryDto;
 import com.fotova.entity.CategoryEntity;
 import com.fotova.entity.ProductEntity;
 import com.fotova.repository.ICrud;
-import com.fotova.service.category.CategoryService;
+import com.fotova.repository.category.CategoryRepositoryJpa;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,7 @@ public class ProductRepositoryImpl implements ICrud<ProductEntity> {
     private ProductRepositoryJpa productRepositoryJpa;
 
     @Autowired
-    private CategoryService categoryService;
+    private CategoryRepositoryJpa categoryRepositoryJpa;
 
     @Override
     @Transactional
@@ -55,7 +54,7 @@ public class ProductRepositoryImpl implements ICrud<ProductEntity> {
 
     @Transactional
     public ProductEntity saveWithCategory(ProductEntity productEntity, int categoryId) {
-        CategoryEntity categoryEntity = categoryService.getCategoryById(categoryId);
+        CategoryEntity categoryEntity = categoryRepositoryJpa.findById(categoryId).get();
         productEntity.setCategory(categoryEntity);
         return productRepositoryJpa.save(productEntity);
     }

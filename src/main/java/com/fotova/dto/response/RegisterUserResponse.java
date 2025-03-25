@@ -10,15 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class RegisterUserResponse {
-
-//    @NotBlank
-//    @Size(max = 100)
     private String name;
-
-//    @NotBlank
-//    @Size(max = 100)
-//    @Email()
     private String email;
-
-
 }

@@ -1,5 +1,12 @@
 package com.fotova.dto.product;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter @Setter
+@AllArgsConstructor @NoArgsConstructor
 public class ProductDtoBack {
 
     private Integer id;
@@ -8,52 +15,4 @@ public class ProductDtoBack {
     private Double price;
     private CategoryInnerProductDto categoryInnerProductDto;
     private String url;
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public CategoryInnerProductDto getCategoryInnerProductDto() {
-        return categoryInnerProductDto;
-    }
-
-    public void setCategoryInnerProductDto(CategoryInnerProductDto categoryInnerProductDto) {
-        this.categoryInnerProductDto = categoryInnerProductDto;
-    }
 }

@@ -13,9 +13,6 @@ public class OrderRepositoryImpl implements ICrud<OrderEntity> {
     @Autowired
     private OrderRepositoryJpa orderRepositoryJpa;
 
-    @Autowired
-    private OrderProductRepositoryImpl orderProductRepositoryImpl;
-
     @Override
     public OrderEntity findById(int id) {
         return orderRepositoryJpa.findById(id).orElse(null);
