@@ -48,12 +48,7 @@ public class AddressRepositoryImpl implements ICrud<AddressEntity> {
         return addressRepositoryJpa.save(addressEntity);
     }
 
-    @Transactional
     public void updateClientAddressId(Integer clientAddressId) {
-        String sql = "UPDATE client_entity SET address_id = NULL WHERE address_id = ?1";
-
-        Query query = entityManager.createNativeQuery(sql);
-        query.setParameter(1, clientAddressId);
-        query.executeUpdate();
+        addressRepositoryJpa.updateClientAddressId(clientAddressId);
     }
 }
