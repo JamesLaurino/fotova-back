@@ -4,8 +4,6 @@ import com.fotova.entity.CategoryEntity;
 import com.fotova.entity.ProductEntity;
 import com.fotova.repository.ICrud;
 import com.fotova.repository.category.CategoryRepositoryJpa;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,9 +12,6 @@ import java.util.List;
 
 @Repository
 public class ProductRepositoryImpl implements ICrud<ProductEntity> {
-
-    @PersistenceContext
-    private EntityManager entityManager;
 
     @Autowired
     private ProductRepositoryJpa productRepositoryJpa;

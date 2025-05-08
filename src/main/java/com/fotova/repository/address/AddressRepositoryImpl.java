@@ -2,10 +2,6 @@ package com.fotova.repository.address;
 
 import com.fotova.entity.AddressEntity;
 import com.fotova.repository.ICrud;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -16,9 +12,6 @@ public class AddressRepositoryImpl implements ICrud<AddressEntity> {
 
     @Autowired
     private AddressRepositoryJpa addressRepositoryJpa;
-
-    @PersistenceContext
-    private EntityManager entityManager;
 
     @Override
     public AddressEntity findById(int id) {
