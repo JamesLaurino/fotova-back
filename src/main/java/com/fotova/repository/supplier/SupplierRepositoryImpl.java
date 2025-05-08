@@ -4,10 +4,8 @@ import com.fotova.entity.SupplierEntity;
 import com.fotova.repository.ICrud;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -48,24 +46,13 @@ public class SupplierRepositoryImpl implements ICrud<SupplierEntity> {
         return supplierRepository.save(supplierEntity);
     }
 
-    @Transactional
+
     public void updateSupplierAddressId(Integer supplierId) {
-
-        String sql = "UPDATE supplier_entity SET address_id = NULL WHERE id = ?1";
-
-        Query query = entityManager.createNativeQuery(sql);
-        query.setParameter(1, supplierId);
-        query.executeUpdate();
+        supplierRepository.updateSupplierAddressId(supplierId);
     }
 
-    @Transactional
     public void updateSupplierProductId(Integer supplierId) {
-
-        String sql = "UPDATE supplier_entity SET product_id = NULL WHERE id = ?1";
-
-        Query query = entityManager.createNativeQuery(sql);
-        query.setParameter(1, supplierId);
-        query.executeUpdate();
+        supplierRepository.updateSupplierProductId(supplierId);
     }
 
 }

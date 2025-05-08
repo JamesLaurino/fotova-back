@@ -2,10 +2,6 @@ package com.fotova.repository.client;
 
 import com.fotova.entity.ClientEntity;
 import com.fotova.repository.ICrud;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -14,9 +10,6 @@ import java.util.Optional;
 
 @Repository
 public class ClientRepositoryImpl implements ICrud<ClientEntity> {
-
-    @PersistenceContext
-    private EntityManager entityManager;
 
     @Autowired
     private ClientRepositoryJpa clientRepository;
@@ -52,13 +45,8 @@ public class ClientRepositoryImpl implements ICrud<ClientEntity> {
         return clientRepository.findById(id).orElse(null);
     }
 
-    @Transactional
     public void updateClientAddress(Integer clientId) {
-        String sql = "UPDATE client_entity SET address_id = NULL WHERE ID = ?1";
-
-        Query query = entityManager.createNativeQuery(sql);
-        query.setParameter(1, clientId);
-        query.executeUpdate();
+        clientRepository.updateClientAddress(clientId);
     }
 
     public Boolean existsByUsername(String username) {
