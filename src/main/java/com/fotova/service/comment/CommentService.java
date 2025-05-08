@@ -29,7 +29,6 @@ public class CommentService {
 
     public void deleteCommentById(int id) {
         commentRepositoryImpl.updateCommentClientId(id);
-        commentRepositoryImpl.updateClientCommentId(id);
         commentRepositoryImpl.deleteById(id);
     }
 
