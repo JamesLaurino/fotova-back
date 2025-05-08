@@ -15,9 +15,6 @@ public class SupplierRepositoryImpl implements ICrud<SupplierEntity> {
     @Autowired
     private SupplierRepositoryJpa supplierRepository;
 
-    @PersistenceContext
-    private EntityManager entityManager;
-
     @Override
     public SupplierEntity findById(int id) {
         return supplierRepository.findById(id).orElse(null);
