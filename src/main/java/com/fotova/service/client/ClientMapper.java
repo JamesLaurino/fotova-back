@@ -72,6 +72,7 @@ public class ClientMapper {
         return clientDto;
     }
 
+    // todo : remove ! already exist in addressMapper
     public AddressEntity mapAddressToAddressEntity(AddressDto addressDto) {
 
         AddressEntity addressEntity = new AddressEntity();

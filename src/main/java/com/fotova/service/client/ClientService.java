@@ -51,6 +51,7 @@ public class ClientService {
         ClientEntity clientEntity = clientRepositoryImpl.findById(clientId);
 
         if(clientEntity !=null && clientEntity.getAddress() != null){
+            //TODO retirer le mapAddressToAddressEntity pour le addressMapper.mapToAddressEntity
             AddressEntity addressEntity = clientMapper.mapAddressToAddressEntity(addressDto);
             addressEntity.setId(clientEntity.getAddress().getId());
             addressRepositoryImpl.save(addressEntity);
