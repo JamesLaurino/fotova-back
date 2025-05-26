@@ -52,8 +52,9 @@ public class ProductService
         return productMapper.mapToProductDtoBack(productEntity);
     }
 
-    public void deleteProductById(int productId) {
+    public String deleteProductById(int productId) {
         productRepository.deleteById(productId);
+        return "Product deleted with id: " + productId;
     }
 
     public ProductDtoBack updateProduct(ProductDtoBack productDtoBack) {
