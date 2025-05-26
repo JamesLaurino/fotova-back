@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
 public class ProductDtoBack {
@@ -15,4 +17,5 @@ public class ProductDtoBack {
     private Double price;
     private CategoryInnerProductDto categoryInnerProductDto;
     private String url;
+    private List<String> images;
 }

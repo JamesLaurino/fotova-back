@@ -1,6 +1,7 @@
 package com.fotova.service.product;
 
 import com.fotova.dto.file.FileResponseDto;
+import com.fotova.dto.image.ImageDto;
 import com.fotova.dto.product.CategoryInnerProductDto;
 import com.fotova.dto.product.ProductDtoBack;
 import com.fotova.entity.CategoryEntity;
@@ -22,6 +23,37 @@ public class ProductMapper {
         }
 
         return productDtoList;
+    }
+
+    public ProductDtoBack setFileUrlToProductDto(List<ImageDto> fileDto, ProductDtoBack productDto,List<FileResponseDto> filesContent){
+
+        List<String> imageList = new ArrayList<>();
+
+        for(ImageDto imageDto : fileDto) {
+            String image = imageDto.getPath();
+            imageList.add(image);
+        }
+
+        productDto.setImages(imageList);
+        return setFileUrlToProductDtoFromImageDto(filesContent,productDto);
+    }
+
+    private ProductDtoBack setFileUrlToProductDtoFromImageDto(List<FileResponseDto> filesContent,ProductDtoBack productDto)
+    {
+        List<String> images = productDto.getImages();
+        List<String> newImages = new ArrayList<>();
+
+        for(FileResponseDto fileResponseDto : filesContent)
+        {
+            images.forEach((image) -> {
+                if(fileResponseDto.getFile().contains(image)) {
+                    String imagesURL = fileResponseDto.getFile();
+                    newImages.add(imagesURL);
+                }
+            });
+            productDto.setImages(newImages);
+        }
+        return productDto;
     }
 
     public List<ProductDtoBack> setFileUrlToProductDtoBackList(List<FileResponseDto> filesContent,List<ProductDtoBack> productDtoBackList){

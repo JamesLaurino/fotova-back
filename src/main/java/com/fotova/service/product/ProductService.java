@@ -4,6 +4,7 @@ package com.fotova.service.product;
 import com.drools.dto.product.ProductDtoDrl;
 import com.fotova.dto.ProductDtoAmq;
 import com.fotova.dto.file.FileResponseDto;
+import com.fotova.dto.image.ImageDto;
 import com.fotova.dto.product.ProductDtoBack;
 import com.drools.service.BusinessProductDroolsService;
 import com.fotova.entity.ProductEntity;
@@ -49,7 +50,10 @@ public class ProductService
 
     public ProductDtoBack getProductById(int productId) {
         ProductEntity productEntity = productRepository.findById(productId);
-        return productMapper.mapToProductDtoBack(productEntity);
+        List<FileResponseDto> filesContent = fileService.getAllFilesContent();
+        List<ImageDto> imageDtoList = productRepository.getProductImages(productId);
+        ProductDtoBack productDtoBack = productMapper.mapToProductDtoBack(productEntity);
+        return productMapper.setFileUrlToProductDto(imageDtoList, productDtoBack, filesContent);
     }
 
     public String deleteProductById(int productId) {
