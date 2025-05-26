@@ -31,9 +31,10 @@ public class CategoryService {
         return categoryMapper.toCategoryDtoList(categoryEntities);
     }
 
-    public void deleteCategoryById(int id){
+    public String deleteCategoryById(int id){
         categoryRepositoryImpl.updateProductCategoryId(id);
         categoryRepositoryImpl.deleteById(id);
+        return "Category deleted successfully for id : " + id;
     }
 
     public CategoryDto addCategory(CategoryDto categoryDto){

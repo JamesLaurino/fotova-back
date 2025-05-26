@@ -27,9 +27,10 @@ public class CommentService {
         return commentMapper.mapToCommentDto(commentEntity);
     }
 
-    public void deleteCommentById(int id) {
+    public String deleteCommentById(int id) {
         commentRepositoryImpl.updateCommentClientId(id);
         commentRepositoryImpl.deleteById(id);
+        return "Comment has been deleted successfully for id : " + id;
     }
 
     public CommentDto updateComment(CommentDto commentDto) {

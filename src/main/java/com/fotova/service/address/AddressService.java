@@ -27,9 +27,10 @@ public class AddressService {
         return addressMapper.mpaToAddressDto(addressEntity);
     }
 
-    public void deleteAddressById(int id){
+    public String deleteAddressById(int id){
         addressRepository.updateClientAddressId(id);
         addressRepository.deleteById(id);
+        return "Address has been deleted successfully for id : " + id;
     }
 
     public AddressDto updateAddress(AddressDto addressDto){
