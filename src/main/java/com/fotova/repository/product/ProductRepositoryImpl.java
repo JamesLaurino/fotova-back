@@ -5,10 +5,9 @@ import com.fotova.entity.CategoryEntity;
 import com.fotova.entity.ProductEntity;
 import com.fotova.repository.ICrud;
 import com.fotova.repository.category.CategoryRepositoryJpa;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,8 +23,6 @@ public class ProductRepositoryImpl implements ICrud<ProductEntity> {
     @Autowired
     private CategoryRepositoryJpa categoryRepositoryJpa;
 
-    @PersistenceContext
-    private EntityManager entityManager;
 
     @Override
     @Transactional
@@ -67,30 +64,18 @@ public class ProductRepositoryImpl implements ICrud<ProductEntity> {
         productRepositoryJpa.deleteById(id);
     }
 
-    @jakarta.transaction.Transactional
-    public List<ImageDto> getProductImages(Integer productId) {
 
-        String sql =
-                "SELECT image_entity.id, image_entity.path " +
-                "FROM image_entity " +
-                "INNER JOIN product_entity ON image_entity.product_id = product_entity.id " +
-                "WHERE product_entity.id = ?1";
-
-        Query query = entityManager.createNativeQuery(sql);
-        query.setParameter(1, productId);
-
-        @SuppressWarnings("unchecked")
-        List<Object[]> results = query.getResultList();
-
-        return results.stream().map(row -> {
-            ImageDto imageDto = new ImageDto();
-
-            imageDto.setId(((Number) row[0]).intValue());
-            imageDto.setPath(row[1].toString());
-
-            return imageDto;
-
-        }).collect(Collectors.toList());
+    public Page<ProductEntity> findAllPaginate(Pageable pageable) {
+        return productRepositoryJpa.findAll(pageable);
     }
 
+    public List<ImageDto> getProductImages(Integer productId) {
+        List<Object[]> rawResults = productRepositoryJpa.getProductImages(productId);
+        return rawResults.stream().map(row -> {
+            ImageDto dto = new ImageDto();
+            dto.setId(((Number) row[0]).intValue());
+            dto.setPath((String) row[1]);
+            return dto;
+        }).collect(Collectors.toList());
+    }
 }

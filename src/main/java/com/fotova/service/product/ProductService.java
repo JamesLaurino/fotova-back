@@ -7,11 +7,15 @@ import com.fotova.dto.file.FileResponseDto;
 import com.fotova.dto.image.ImageDto;
 import com.fotova.dto.product.ProductDtoBack;
 import com.drools.service.BusinessProductDroolsService;
+import com.fotova.dto.product.ProductPageDto;
 import com.fotova.entity.ProductEntity;
 import com.fotova.repository.product.ProductRepositoryImpl;
 import com.fotova.service.RabbitMQProducer;
 import com.fotova.service.file.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,11 +39,17 @@ public class ProductService
     private FileService fileService;
 
     public ProductDtoBack saveProduct(ProductDtoBack product, final int categoryId) {
-
         ProductEntity productEntity = productMapper.mapToProductEntity(product);
         ProductEntity productEntityToMap = productRepository.saveWithCategory(productEntity,categoryId);
         return productMapper.mapToProductDtoBack(productEntityToMap);
     }
+
+    public ProductPageDto getAllProductsPaginate(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Page<ProductEntity> productEntityPage = productRepository.findAllPaginate(pageable);
+        return productMapper.mapToPageable(productEntityPage);
+    }
+
 
     public List<ProductDtoBack> getAllProducts() {
         List<ProductEntity> productEntityList = productRepository.findAll();

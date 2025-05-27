@@ -4,8 +4,10 @@ import com.fotova.dto.file.FileResponseDto;
 import com.fotova.dto.image.ImageDto;
 import com.fotova.dto.product.CategoryInnerProductDto;
 import com.fotova.dto.product.ProductDtoBack;
+import com.fotova.dto.product.ProductPageDto;
 import com.fotova.entity.CategoryEntity;
 import com.fotova.entity.ProductEntity;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -38,8 +40,7 @@ public class ProductMapper {
         return setFileUrlToProductDtoFromImageDto(filesContent,productDto);
     }
 
-    private ProductDtoBack setFileUrlToProductDtoFromImageDto(List<FileResponseDto> filesContent,ProductDtoBack productDto)
-    {
+    private ProductDtoBack setFileUrlToProductDtoFromImageDto(List<FileResponseDto> filesContent,ProductDtoBack productDto) {
         List<String> images = productDto.getImages();
         List<String> newImages = new ArrayList<>();
 
@@ -109,6 +110,16 @@ public class ProductMapper {
         }
 
         return productEntity;
+    }
+
+    public ProductPageDto mapToPageable(Page<ProductEntity> productEntityPage) {
+        ProductPageDto productPageDto = new ProductPageDto();
+        productPageDto.setContent(mapToProductDtoBackList(productEntityPage.getContent()));
+        productPageDto.setPageNumber(productEntityPage.getPageable().getPageNumber());
+        productPageDto.setPageSize(productEntityPage.getPageable().getPageSize());
+        productPageDto.setTotalPage(productEntityPage.getTotalPages());
+        productPageDto.setTotalData((long) productEntityPage.getContent().size());
+        return productPageDto;
     }
 
 }
