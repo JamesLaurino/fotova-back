@@ -2,6 +2,7 @@ package com.fotova.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fotova.dto.client.ClientAddressDto;
+import com.fotova.dto.client.ClientCommentDto;
 import com.fotova.entity.ERole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,6 +21,7 @@ public class UserResponse {
     private String username;
     private String email;
     private ClientAddressDto address;
+    private List<ClientCommentDto> comments;
 
     @JsonProperty("is_verified")
     private Boolean isActive;
