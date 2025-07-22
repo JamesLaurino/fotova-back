@@ -86,6 +86,10 @@ public class OrderService {
         return orderMapper.mapToOrderProductBillingDto(productDtoList);
     }
 
+    public List<OrderProductDto> getOrderProductsByEmail(String email) {
+        return orderProductRepository.getOrdersProductByEmail(email);
+    }
+
     public void cleanOrderBasketByUUID(String uuid) {
 
         List<OrderBasketDto> orderBasketDtoUUID = getOrderBasketByUUID(uuid);
