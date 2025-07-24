@@ -38,7 +38,7 @@ public class ProductRepositoryImpl implements ICrud<ProductEntity> {
 
     @Override
     @Transactional
-    public ProductEntity save(ProductEntity productEntity) {;
+    public ProductEntity save(ProductEntity productEntity) {
         return productRepositoryJpa.save(productEntity);
     }
 
@@ -77,5 +77,9 @@ public class ProductRepositoryImpl implements ICrud<ProductEntity> {
             dto.setPath((String) row[1]);
             return dto;
         }).collect(Collectors.toList());
+    }
+
+    public List<ProductEntity> findProductsByCategoryId (Integer categoryId) {
+        return productRepositoryJpa.findProductsByCategoryId(categoryId);
     }
 }

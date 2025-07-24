@@ -11,4 +11,8 @@ public interface ProductRepositoryJpa extends JpaRepository<ProductEntity,Intege
     @Transactional
     @Query(value = "SELECT id, path FROM image_entity WHERE product_id = ?1", nativeQuery = true)
     List<Object[]> getProductImages(Integer productId);
+
+    @Transactional
+    @Query(value = "SELECT p FROM ProductEntity p WHERE p.category.id = ?1")
+    List<ProductEntity> findProductsByCategoryId(Integer categoryId);
 }

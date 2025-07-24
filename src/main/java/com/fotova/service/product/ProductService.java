@@ -50,6 +50,12 @@ public class ProductService
         return productMapper.mapToPageable(productEntityPage);
     }
 
+    public List<ProductDtoBack> getAllProductByCategoryId(Integer categoryId) {
+        List<ProductEntity> productEntityList = productRepository.findProductsByCategoryId(categoryId);
+        List<FileResponseDto> filesContent = fileService.getAllFilesContent();
+        List<ProductDtoBack> productDtoBackList = productMapper.mapToProductDtoBackList(productEntityList);
+        return productMapper.setFileUrlToProductDtoBackList(filesContent,productDtoBackList);
+    }
 
     public List<ProductDtoBack> getAllProducts() {
         List<ProductEntity> productEntityList = productRepository.findAll();
