@@ -2,7 +2,9 @@ package com.fotova.service.product;
 
 
 import com.drools.dto.product.ProductDtoDrl;
+import com.fotova.dto.ContactDtoAmq;
 import com.fotova.dto.ProductDtoAmq;
+import com.fotova.dto.contact.ContactDto;
 import com.fotova.dto.file.FileResponseDto;
 import com.fotova.dto.image.ImageDto;
 import com.fotova.dto.product.ProductDtoBack;
@@ -81,6 +83,16 @@ public class ProductService
         ProductEntity productEntity = productMapper.mapToProductEntity(productDtoBack);
         productRepository.save(productEntity);
         return productDtoBack;
+    }
+
+    public String sendMailFromContact(ContactDto contactDto) {
+        ContactDtoAmq contactDtoAmq = new ContactDtoAmq();
+        contactDtoAmq.setEmail(contactDto.getEmail());
+        contactDtoAmq.setNom(contactDto.getNom());
+        contactDtoAmq.setMessage(contactDto.getMessage());
+        contactDtoAmq.setSujet(contactDto.getSujet());
+        rabbitMQProducer.sendMessageFromContact(contactDtoAmq);
+        return "Message send successfully";
     }
 
     public void testDroolsService() {
