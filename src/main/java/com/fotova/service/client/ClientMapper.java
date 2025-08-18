@@ -94,6 +94,7 @@ public class ClientMapper {
         clientEntity.setUsername(UUID.randomUUID().toString());
         clientEntity.setEmail(UUID.randomUUID().toString());
         clientEntity.setPassword(UUID.randomUUID().toString());
+        clientEntity.setIsActive(false);
         return clientEntity;
     }
 }
