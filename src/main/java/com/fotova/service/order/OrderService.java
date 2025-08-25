@@ -90,6 +90,11 @@ public class OrderService {
         return orderProductRepository.getOrdersProductByEmail(email);
     }
 
+    public List<OrderProductDto> getOrdersDetailed() {
+        return orderProductRepository.getOrdersDetailed();
+    }
+
+
     public void cleanOrderBasketByUUID(String uuid) {
 
         List<OrderBasketDto> orderBasketDtoUUID = getOrderBasketByUUID(uuid);
