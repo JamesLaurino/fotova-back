@@ -10,10 +10,12 @@ import com.fotova.dto.image.ImageDto;
 import com.fotova.dto.product.ProductDtoBack;
 import com.drools.service.BusinessProductDroolsService;
 import com.fotova.dto.product.ProductPageDto;
+import com.fotova.entity.ImageEntity;
 import com.fotova.entity.ProductEntity;
 import com.fotova.repository.product.ProductRepositoryImpl;
 import com.fotova.service.RabbitMQProducer;
 import com.fotova.service.file.FileService;
+import com.fotova.service.image.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -39,6 +41,9 @@ public class ProductService
 
     @Autowired
     private FileService fileService;
+
+    @Autowired
+    private ImageService imageService;
 
     public ProductDtoBack saveProduct(ProductDtoBack product, final int categoryId) {
         ProductEntity productEntity = productMapper.mapToProductEntity(product);
@@ -75,6 +80,7 @@ public class ProductService
     }
 
     public String deleteProductById(int productId) {
+        imageService.updateImagesByProductId(productId);
         productRepository.deleteById(productId);
         return "Product deleted with id: " + productId;
     }

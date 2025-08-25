@@ -42,4 +42,8 @@ public class ImageRepositoryImpl implements ICrud<ImageEntity> {
     public ImageEntity update(ImageEntity imageEntity) {
         return imageRepositoryJpa.save(imageEntity);
     }
+
+    public void updateImagesByProductId(Integer productId) {
+        imageRepositoryJpa.updateImagesByProductId(productId);
+    }
 }

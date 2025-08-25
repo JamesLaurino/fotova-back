@@ -22,6 +22,10 @@ public class ImageService {
         return imageMapper.mapToImageDtoList(imageRepositoryImpl.findAll());
     }
 
+    public void updateImagesByProductId(Integer productId) {
+        imageRepositoryImpl.updateImagesByProductId(productId);
+    }
+
     public ImageDto getImageById(Integer id) {
         return imageMapper.mapToImageDto(imageRepositoryImpl.findById(id));
     }
