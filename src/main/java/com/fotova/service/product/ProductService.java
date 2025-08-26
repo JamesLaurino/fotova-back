@@ -2,15 +2,14 @@ package com.fotova.service.product;
 
 
 import com.drools.dto.product.ProductDtoDrl;
+import com.drools.service.BusinessProductDroolsService;
 import com.fotova.dto.ContactDtoAmq;
 import com.fotova.dto.ProductDtoAmq;
 import com.fotova.dto.contact.ContactDto;
 import com.fotova.dto.file.FileResponseDto;
 import com.fotova.dto.image.ImageDto;
 import com.fotova.dto.product.ProductDtoBack;
-import com.drools.service.BusinessProductDroolsService;
 import com.fotova.dto.product.ProductPageDto;
-import com.fotova.entity.ImageEntity;
 import com.fotova.entity.ProductEntity;
 import com.fotova.repository.product.ProductRepositoryImpl;
 import com.fotova.service.RabbitMQProducer;

@@ -60,7 +60,8 @@ public class ProductMapper {
     public List<ProductDtoBack> setFileUrlToProductDtoBackList(List<FileResponseDto> filesContent,List<ProductDtoBack> productDtoBackList){
         for(FileResponseDto fileResponseDto : filesContent) {
             productDtoBackList.forEach((productDto) -> {
-               if(fileResponseDto.getFile().contains(productDto.getUrl())) {
+                String url = productDto.getUrl();
+                if(url != null && !url.isBlank() && fileResponseDto.getFile().contains(productDto.getUrl())) {
                    productDto.setUrl(fileResponseDto.getFile());
                }
             });
