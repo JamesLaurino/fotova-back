@@ -35,6 +35,18 @@ public class ImageService {
         return "Image deleted successfully with id : " + id;
     }
 
+    public String deleteImageByImageName(String imageName,Integer productId) {
+        // TODO : IMPROUVE BY RETREIVE BY NAME AND NOT ALL
+        List<ImageEntity> images = imageRepositoryImpl.findAll();
+        for(ImageEntity image : images) {
+            if(image.getPath().equals(imageName) && image.getProduct().getId() == productId) {
+                imageRepositoryImpl.deleteById(image.getId());
+                return "Image deleted successfully with name : " + imageName;
+            }
+        }
+        return "Image not found with name : " + imageName;
+    }
+
     public String deleteAllImages() {
         imageRepositoryImpl.deleteAll();
         return "All images has been deleted successfully";
