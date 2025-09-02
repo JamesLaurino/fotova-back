@@ -21,6 +21,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -100,6 +101,7 @@ public class ProductService
         return "Message send successfully";
     }
 
+    /* TESTING SERVICE FOR DROOLS */
     public void testDroolsService() {
         ProductDtoDrl productDto = new ProductDtoDrl();
         productDto.setId(1);
@@ -110,6 +112,68 @@ public class ProductService
         businessProductDroolsService.kieService(productDto);
     }
 
+    public List<ProductDtoBack> setDiscountForProductDrools() {
+
+        ProductDtoBack productDto1 = new ProductDtoBack();
+        productDto1.setId(1);
+        productDto1.setName("Product 1");
+        productDto1.setPrice(10.0);
+        productDto1.setQuantity(3);
+
+        ProductDtoBack productDto2 = new ProductDtoBack();
+        productDto2.setId(2);
+        productDto2.setName("Product 2");
+        productDto2.setPrice(15.0);
+        productDto2.setQuantity(5);
+
+        ProductDtoBack productDto3 = new ProductDtoBack();
+        productDto3.setId(3);
+        productDto3.setName("Product 3");
+        productDto3.setPrice(20.0);
+        productDto3.setQuantity(15);
+
+        ProductDtoBack productDto4 = new ProductDtoBack();
+        productDto4.setId(4);
+        productDto4.setName("Product 4");
+        productDto4.setPrice(25.0);
+        productDto4.setQuantity(20);
+
+        ProductDtoBack productDto5 = new ProductDtoBack();
+        productDto5.setId(5);
+        productDto5.setName("Product 5");
+        productDto5.setPrice(30.0);
+        productDto5.setQuantity(25);
+
+        List<ProductDtoBack> productDtoList =
+                new ArrayList<>(List.of(productDto1, productDto2, productDto3, productDto4, productDto5));
+
+        List<ProductDtoDrl> productDtoDroolslList = new ArrayList<>();
+
+        for(ProductDtoBack productDto : productDtoList) {
+            ProductDtoDrl productDtoDrl = new ProductDtoDrl();
+            productDtoDrl.setId(productDto.getId());
+            productDtoDrl.setName(productDto.getName());
+            productDtoDrl.setPrice(productDto.getPrice());
+            productDtoDrl.setQuantity(productDto.getQuantity());
+            businessProductDroolsService.kieService(productDtoDrl);
+            productDtoDroolslList.add(productDtoDrl);
+        }
+
+        List<ProductDtoBack> productDtoBackListUpdated = new ArrayList<>();
+
+        for(ProductDtoDrl productDtoDrl : productDtoDroolslList) {
+            ProductDtoBack productDtoBackUpdated = new ProductDtoBack();
+            productDtoBackUpdated.setId(productDtoDrl.getId());
+            productDtoBackUpdated.setName(productDtoDrl.getName());
+            productDtoBackUpdated.setPrice(productDtoDrl.getPrice());
+            productDtoBackUpdated.setQuantity(productDtoDrl.getQuantity());
+            productDtoBackListUpdated.add(productDtoBackUpdated);
+        }
+
+        return productDtoBackListUpdated;
+    }
+
+    /* TESTING SERVICE FOR AMQ */
     public void testAMQPService(ProductDtoDrl productDto) {
         ProductDtoAmq product = new ProductDtoAmq();
         product.setId(productDto.getId());
