@@ -103,8 +103,7 @@ public class FileService {
 
             return  fileMapper.mapToFileResponseDto(filesList);
         } catch (IOException e) {
-            System.out.println(e.getMessage());
-            return null;
+            throw new RuntimeException(e);
         }
     }
 }
