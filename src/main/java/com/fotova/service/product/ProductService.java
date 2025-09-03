@@ -109,13 +109,17 @@ public class ProductService
     }
 
     public String sendMailFromContact(ContactDto contactDto) {
-        ContactDtoAmq contactDtoAmq = new ContactDtoAmq();
-        contactDtoAmq.setEmail(contactDto.getEmail());
-        contactDtoAmq.setNom(contactDto.getNom());
-        contactDtoAmq.setMessage(contactDto.getMessage());
-        contactDtoAmq.setSujet(contactDto.getSujet());
-        rabbitMQProducer.sendMessageFromContact(contactDtoAmq);
-        return "Message send successfully";
+        try {
+            ContactDtoAmq contactDtoAmq = new ContactDtoAmq();
+            contactDtoAmq.setEmail(contactDto.getEmail());
+            contactDtoAmq.setNom(contactDto.getNom());
+            contactDtoAmq.setMessage(contactDto.getMessage());
+            contactDtoAmq.setSujet(contactDto.getSujet());
+            rabbitMQProducer.sendMessageFromContact(contactDtoAmq);
+            return "Message send successfully";
+        }catch (Exception e){
+            throw new RuntimeException("There was an error sending the mail");
+        }
     }
 
     /* TESTING SERVICE FOR DROOLS */
