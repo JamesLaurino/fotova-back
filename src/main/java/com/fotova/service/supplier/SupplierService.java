@@ -6,6 +6,8 @@ import com.fotova.dto.supplier.SupplierDto;
 import com.fotova.entity.AddressEntity;
 import com.fotova.entity.ProductEntity;
 import com.fotova.entity.SupplierEntity;
+import com.fotova.exception.DataExistException;
+import com.fotova.exception.NotFoundException;
 import com.fotova.repository.address.AddressRepositoryImpl;
 import com.fotova.repository.product.ProductRepositoryImpl;
 import com.fotova.repository.supplier.SupplierRepositoryImpl;
@@ -43,28 +45,43 @@ public class SupplierService {
 
     public SupplierDto findById(Integer id){
         SupplierEntity supplierEntity = supplierRepositoryImpl.findById(id);
+        if(supplierEntity == null){
+            throw new NotFoundException("Supplier with id " + id + " not found");
+        }
         return supplierMapper.mapToDto(supplierEntity);
     }
 
     public SupplierDto save(SupplierDto supplierDto){
-        SupplierEntity supplierEntity = supplierMapper.mapToEntity(supplierDto);
-        supplierEntity = supplierRepositoryImpl.save(supplierEntity);
 
-        SupplierDto supplierDtoRes = new SupplierDto();
-        supplierDtoRes.setId(supplierEntity.getId());
-        supplierDtoRes.setRegistrationNumber(supplierEntity.getRegistrationNumber());
+        try {
+            SupplierEntity supplierEntity = supplierMapper.mapToEntity(supplierDto);
+            supplierEntity = supplierRepositoryImpl.save(supplierEntity);
 
-        return supplierDtoRes;
+            SupplierDto supplierDtoRes = new SupplierDto();
+            supplierDtoRes.setId(supplierEntity.getId());
+            supplierDtoRes.setRegistrationNumber(supplierEntity.getRegistrationNumber());
+
+            return supplierDtoRes;
+        }catch (Exception e){
+            throw new DataExistException("Supplier already exist for the given id");
+        }
     }
 
     public SupplierDto update(SupplierDto supplierDto){
-        SupplierEntity supplierEntity = supplierMapper.mapToEntity(supplierDto);
+        SupplierEntity supplierEntity = supplierRepositoryImpl.findById(supplierDto.getId());
+        if(supplierEntity == null){
+            throw new NotFoundException("Supplier with id " + supplierDto.getId() + " not found");
+        }
+        supplierEntity = supplierMapper.mapToEntity(supplierDto);
         supplierEntity = supplierRepositoryImpl.save(supplierEntity);
         return supplierMapper.mapToDto(supplierEntity);
     }
 
     public String delete(Integer id){
-        supplierRepositoryImpl.updateSupplierAddressId(id);
+        SupplierEntity supplierEntity = supplierRepositoryImpl.findById(id);
+        if(supplierEntity == null){
+            throw new NotFoundException("Supplier with id " + id + " not found");
+        }supplierRepositoryImpl.updateSupplierAddressId(id);
         supplierRepositoryImpl.updateSupplierProductId(id);
         supplierRepositoryImpl.deleteById(id);
         return "Supplier has been deleted successfully";
@@ -72,6 +89,9 @@ public class SupplierService {
 
     public SupplierDto addSupplierAddress(Integer supplierId, AddressDto addressDto) {
         SupplierEntity supplierEntity = supplierRepositoryImpl.findById(supplierId);
+        if(supplierEntity == null){
+            throw new NotFoundException("Supplier with id " + supplierId + " not found");
+        }
         AddressEntity addressEntity = addressMapper.mapToAddressEntity(addressDto);
         addressRepositoryImpl.save(addressEntity);
         supplierEntity.setAddress(addressEntity);
@@ -82,6 +102,9 @@ public class SupplierService {
 
     public SupplierDto addSupplierProduct(Integer supplierId, ProductDtoBack productDtoBack) {
         SupplierEntity supplierEntity = supplierRepositoryImpl.findById(supplierId);
+        if(supplierEntity == null){
+            throw new NotFoundException("Supplier with id " + supplierId + " not found");
+        }
         ProductEntity productEntity = productMapper.mapToProductEntity(productDtoBack);
         productRepositoryImpl.save(productEntity);
         supplierEntity.setProduct(productEntity);
