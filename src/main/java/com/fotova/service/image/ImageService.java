@@ -4,6 +4,8 @@ import com.fotova.dto.image.ImageDto;
 import com.fotova.dto.product.ProductDtoBack;
 import com.fotova.entity.ImageEntity;
 import com.fotova.entity.ProductEntity;
+import com.fotova.exception.DataExistException;
+import com.fotova.exception.NotFoundException;
 import com.fotova.repository.image.ImageRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,16 +29,23 @@ public class ImageService {
     }
 
     public ImageDto getImageById(Integer id) {
-        return imageMapper.mapToImageDto(imageRepositoryImpl.findById(id));
+        try {
+            return imageMapper.mapToImageDto(imageRepositoryImpl.findById(id));
+        } catch (Exception e) {
+            throw new NotFoundException("Image not found for given id : " + id);
+        }
     }
 
     public String deleteImageById(Integer id) {
-        imageRepositoryImpl.deleteById(id);
-        return "Image deleted successfully with id : " + id;
+        try {
+            imageRepositoryImpl.deleteById(id);
+            return "Image deleted successfully with id : " + id;
+        } catch (Exception e) {
+            throw new DataExistException("Delete image failed with id : " + id);
+        }
     }
 
     public String deleteImageByImageName(String imageName,Integer productId) {
-        // TODO : IMPROUVE BY RETREIVE BY NAME AND NOT ALL
         List<ImageEntity> images = imageRepositoryImpl.findAll();
         for(ImageEntity image : images) {
             if(image.getPath().equals(imageName) && image.getProduct().getId() == productId) {
@@ -62,6 +71,9 @@ public class ImageService {
 
     public ImageDto updateImage(ImageDto imageDto) {
         ImageEntity imageEntity = imageRepositoryImpl.findById(imageDto.getId());
+        if(imageEntity != null) {
+            throw new NotFoundException("Image not found for given id : " + imageDto.getId());
+        }
         Integer productId = imageEntity.getProduct().getId();
         ProductDtoBack productDtoBack = new ProductDtoBack();
         productDtoBack.setId(productId);
