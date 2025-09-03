@@ -11,6 +11,8 @@ import com.fotova.dto.image.ImageDto;
 import com.fotova.dto.product.ProductDtoBack;
 import com.fotova.dto.product.ProductPageDto;
 import com.fotova.entity.ProductEntity;
+import com.fotova.exception.DataExistException;
+import com.fotova.exception.NotFoundException;
 import com.fotova.repository.product.ProductRepositoryImpl;
 import com.fotova.service.RabbitMQProducer;
 import com.fotova.service.file.FileService;
@@ -46,9 +48,13 @@ public class ProductService
     private ImageService imageService;
 
     public ProductDtoBack saveProduct(ProductDtoBack product, final int categoryId) {
-        ProductEntity productEntity = productMapper.mapToProductEntity(product);
-        ProductEntity productEntityToMap = productRepository.saveWithCategory(productEntity,categoryId);
-        return productMapper.mapToProductDtoBack(productEntityToMap);
+        try {
+            ProductEntity productEntity = productMapper.mapToProductEntity(product);
+            ProductEntity productEntityToMap = productRepository.saveWithCategory(productEntity,categoryId);
+            return productMapper.mapToProductDtoBack(productEntityToMap);
+        } catch (Exception e) {
+            throw new DataExistException("Product already exist for the given id");
+        }
     }
 
     public ProductPageDto getAllProductsPaginate(int pageNo, int pageSize) {
@@ -73,6 +79,9 @@ public class ProductService
 
     public ProductDtoBack getProductById(int productId) {
         ProductEntity productEntity = productRepository.findById(productId);
+        if (productEntity == null) {
+            throw new NotFoundException("Product with id " + productId + " not found");
+        }
         List<FileResponseDto> filesContent = fileService.getAllFilesContent();
         List<ImageDto> imageDtoList = productRepository.getProductImages(productId);
         ProductDtoBack productDtoBack = productMapper.mapToProductDtoBack(productEntity);
@@ -80,15 +89,23 @@ public class ProductService
     }
 
     public String deleteProductById(int productId) {
-        imageService.updateImagesByProductId(productId);
-        productRepository.deleteById(productId);
-        return "Product deleted with id: " + productId;
+        try {
+            imageService.updateImagesByProductId(productId);
+            productRepository.deleteById(productId);
+            return "Product deleted with id: " + productId;
+        } catch (Exception e) {
+            throw new NotFoundException("Error deleting product with id: " + productId + " " + e.getMessage());
+        }
     }
 
     public ProductDtoBack updateProduct(ProductDtoBack productDtoBack) {
-        ProductEntity productEntity = productMapper.mapToProductEntity(productDtoBack);
-        productRepository.save(productEntity);
-        return productDtoBack;
+        try {
+            ProductEntity productEntity = productMapper.mapToProductEntity(productDtoBack);
+            productRepository.save(productEntity);
+            return productDtoBack;
+        } catch (Exception e) {
+            throw new DataExistException("Product cannot be saved with id: " + productDtoBack.getId() + " " + e.getMessage());
+        }
     }
 
     public String sendMailFromContact(ContactDto contactDto) {
