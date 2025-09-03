@@ -9,6 +9,7 @@ import com.fotova.entity.ClientEntity;
 import com.fotova.entity.OrderEntity;
 import com.fotova.entity.OrderProductEntity;
 import com.fotova.entity.ProductEntity;
+import com.fotova.exception.NotFoundException;
 import com.fotova.repository.client.ClientRepositoryImpl;
 import com.fotova.repository.redis.OrderBasketRepositoryImpl;
 import com.fotova.repository.order.OrderProductRepositoryImpl;
@@ -61,6 +62,20 @@ public class OrderService {
     public OrderDto getOrderById(Integer orderId) {
         OrderEntity orderEntity = orderRepository.findById(orderId);
         return orderMapper.mapToOrderDto(orderEntity);
+    }
+
+    public OrderDto toggleCompleted(Integer orderId) {
+        OrderEntity orderEntity = orderRepository.findById(orderId);
+        if(orderEntity == null) {
+            throw new NotFoundException("Order does not exist for id: " + orderId);
+        }
+
+        try {
+            orderEntity.setIsDone(!orderEntity.getIsDone());
+            return orderMapper.mapToOrderDto(orderRepository.save(orderEntity));
+        }catch (Exception e) {
+            throw new RuntimeException("Error toggling order completed: " + e.getMessage());
+        }
     }
 
     public OrderDto addOrder(OrderDto orderDto) {

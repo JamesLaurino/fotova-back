@@ -18,6 +18,9 @@ public class OrderEntity {
     @Column(name = "createAt")
     private Instant createAt;
 
+    @Column(name = "isDone")
+    private Boolean isDone;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
     private ClientEntity client;

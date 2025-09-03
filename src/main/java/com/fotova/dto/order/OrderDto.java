@@ -13,5 +13,6 @@ import java.time.Instant;
 public class OrderDto {
     private Integer id;
     private Instant createAt;
+    private Boolean isDone;
     private OrderClientDto client;
 }

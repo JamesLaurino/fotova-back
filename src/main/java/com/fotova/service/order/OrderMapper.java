@@ -39,6 +39,7 @@ public class OrderMapper {
         OrderDto orderDto = new OrderDto();
         orderDto.setId(orderEntity.getId());
         orderDto.setCreateAt(orderEntity.getCreateAt());
+        orderDto.setIsDone(orderEntity.getIsDone());
 
         if(orderEntity.getClient()!=null){
             OrderClientDto orderClientDto = new OrderClientDto();
@@ -53,6 +54,7 @@ public class OrderMapper {
 
         OrderEntity orderEntity = new OrderEntity();
         orderEntity.setCreateAt(orderDto.getCreateAt());
+        orderEntity.setIsDone(orderDto.getIsDone());
 
         ClientEntity clientEntity = new ClientEntity();
         clientEntity.setId(clientId);
