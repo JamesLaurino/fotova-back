@@ -9,6 +9,7 @@ import com.fotova.entity.ClientEntity;
 import com.fotova.entity.OrderEntity;
 import com.fotova.entity.OrderProductEntity;
 import com.fotova.entity.ProductEntity;
+import com.fotova.exception.DataExistException;
 import com.fotova.exception.NotFoundException;
 import com.fotova.repository.client.ClientRepositoryImpl;
 import com.fotova.repository.redis.OrderBasketRepositoryImpl;
@@ -61,6 +62,9 @@ public class OrderService {
 
     public OrderDto getOrderById(Integer orderId) {
         OrderEntity orderEntity = orderRepository.findById(orderId);
+        if (orderEntity == null) {
+            throw new NotFoundException("Order not found for id: " + orderId);
+        }
         return orderMapper.mapToOrderDto(orderEntity);
     }
 
@@ -79,16 +83,19 @@ public class OrderService {
     }
 
     public OrderDto addOrder(OrderDto orderDto) {
+        try {
+            Optional<ClientEntity> clientEntity = clientRepository.findFirstByEmail(orderDto.getClient().getEmail());
+            OrderEntity orderEntity = new OrderEntity();
 
-        Optional<ClientEntity> clientEntity = clientRepository.findFirstByEmail(orderDto.getClient().getEmail());
-        OrderEntity orderEntity = new OrderEntity();
+            if(clientEntity.isPresent())
+            {
+                orderEntity = orderMapper.mapToOrderEntity(orderDto, clientEntity.get().getId());
+            }
 
-        if(clientEntity.isPresent())
-        {
-            orderEntity = orderMapper.mapToOrderEntity(orderDto, clientEntity.get().getId());
+            return orderMapper.mapToOrderDto(orderRepository.save(orderEntity));
+        } catch (Exception e) {
+            throw new DataExistException("Order already exists");
         }
-
-        return orderMapper.mapToOrderDto(orderRepository.save(orderEntity));
     }
 
     public List<OrderProductDto> getOrderProductByEmail(String email, Integer orderId) {
@@ -96,17 +103,28 @@ public class OrderService {
     }
 
     public OrderProductBillingDto  getOrderProductBillingByEmail(String email,Integer orderId) {
-        List<OrderProductDto> productDtoList = orderProductRepository.getOrderProductByEmail(email,orderId);
-
-        return orderMapper.mapToOrderProductBillingDto(productDtoList);
+        try {
+            List<OrderProductDto> productDtoList = orderProductRepository.getOrderProductByEmail(email,orderId);
+            return orderMapper.mapToOrderProductBillingDto(productDtoList);
+        } catch (Exception e) {
+            throw new NotFoundException("Order product billing not found for email: " + email);
+        }
     }
 
     public List<OrderProductDto> getOrderProductsByEmail(String email) {
-        return orderProductRepository.getOrdersProductByEmail(email);
+        try {
+            return orderProductRepository.getOrdersProductByEmail(email);
+        } catch (Exception e) {
+            throw new NotFoundException("Order products not found for email: " + email);
+        }
     }
 
     public List<OrderProductDto> getOrdersDetailed() {
-        return orderProductRepository.getOrdersDetailed();
+        try {
+            return orderProductRepository.getOrdersDetailed();
+        } catch (Exception e) {
+            throw new NotFoundException("No detailed orders found");
+        }
     }
 
 
