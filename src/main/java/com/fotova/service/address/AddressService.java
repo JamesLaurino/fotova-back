@@ -46,13 +46,17 @@ public class AddressService {
     }
 
     public AddressDto updateAddress(AddressDto addressDto){
-        if (addressRepository.findById(addressDto.getId()) == null) {
-            log.error("Address with id " + addressDto.getId() + " not found. Update impossible for id : " + addressDto.getId());
-            throw new NotFoundException("Address with id " + addressDto.getId() + " not found. Update impossible for id : " + addressDto.getId() + " .");
+        try {
+            if (addressRepository.findById(addressDto.getId()) == null) {
+                log.error("Address with id " + addressDto.getId() + " not found. Update impossible for id : " + addressDto.getId());
+                throw new NotFoundException("Address with id " + addressDto.getId() + " not found. Update impossible for id : " + addressDto.getId() + " .");
+            }
+            AddressEntity addressEntity = addressMapper.mapToAddressEntity(addressDto);
+            AddressEntity addressEntityRes= addressRepository.update(addressEntity);
+            return addressMapper.mpaToAddressDto(addressEntityRes);
+        } catch (DataExistException e) {
+            throw new DataExistException("Address with id " + addressDto.getId() + " already exists.");
         }
-        AddressEntity addressEntity = addressMapper.mapToAddressEntity(addressDto);
-        AddressEntity addressEntityRes= addressRepository.update(addressEntity);
-        return addressMapper.mpaToAddressDto(addressEntityRes);
     }
 
     public AddressDto addAddress(AddressDto addressDto){
