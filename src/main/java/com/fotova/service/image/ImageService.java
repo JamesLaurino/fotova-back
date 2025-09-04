@@ -71,7 +71,7 @@ public class ImageService {
 
     public ImageDto updateImage(ImageDto imageDto) {
         ImageEntity imageEntity = imageRepositoryImpl.findById(imageDto.getId());
-        if(imageEntity != null) {
+        if(imageEntity == null) {
             throw new NotFoundException("Image not found for given id : " + imageDto.getId());
         }
         Integer productId = imageEntity.getProduct().getId();
