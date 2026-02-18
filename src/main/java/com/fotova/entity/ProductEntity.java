@@ -27,6 +27,9 @@ public class ProductEntity {
     @Column(name = "url")
     private String url;
 
+    @Column(name = "description")
+    private String description;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private CategoryEntity category;

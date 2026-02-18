@@ -19,6 +19,7 @@ public class ProductDtoBack {
     private Integer quantity;
     @Min(value = 0, message = "Price must be greater or equal than 0")
     private Double price;
+    private String description;
     private CategoryInnerProductDto categoryInnerProductDto;
     private String url;
     private List<String> images;

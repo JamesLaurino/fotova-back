@@ -80,6 +80,7 @@ public class ProductMapper {
         productDto.setPrice(productEntity.getPrice());
         productDto.setQuantity(productEntity.getQuantity());
         productDto.setUrl(productEntity.getUrl());
+        productDto.setDescription(productEntity.getDescription());
 
         if(productEntity.getCategory()!=null){
             CategoryInnerProductDto innerCategory = new CategoryInnerProductDto();
@@ -100,6 +101,7 @@ public class ProductMapper {
         productEntity.setId(productDtoBack.getId());
         productEntity.setName(productDtoBack.getName());
         productEntity.setPrice(productDtoBack.getPrice());
+        productEntity.setDescription(productDtoBack.getDescription());
         productEntity.setQuantity(productDtoBack.getQuantity());
         productEntity.setUrl(productDtoBack.getUrl());
 
