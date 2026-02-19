@@ -1,5 +1,6 @@
 package com.fotova.service.order;
 
+import com.fotova.dto.BillingDetailDtoAmq;
 import com.fotova.dto.order.OrderBasketDto;
 import com.fotova.dto.order.OrderDto;
 import com.fotova.dto.orderProduct.OrderProductBillingDto;
@@ -17,6 +18,7 @@ import com.fotova.repository.order.OrderProductRepositoryImpl;
 import com.fotova.repository.order.OrderRepositoryImpl;
 import com.fotova.repository.product.ProductRepositoryImpl;
 import com.fotova.service.RabbitMQProducer;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -125,6 +127,14 @@ public class OrderService {
         } catch (Exception e) {
             throw new NotFoundException("No detailed orders found");
         }
+    }
+
+    public void sendBillingEmail(String uuid) throws MessagingException {
+        List<OrderBasketDto> orderBasketDto = getOrderBasketByUUID(uuid);
+        List<ProductEntity> productEntityList = orderBasketDto.stream().map(orderBasketDto1 ->
+                productRepository.findById(orderBasketDto1.getProductId())).collect(Collectors.toList());
+        BillingDetailDtoAmq billingDetailDtoAmq = orderMapper.mapToBillingDetailDtoAmq(orderBasketDto,productEntityList);
+        rabbitMQProducer.sendBillingEmailMessage(billingDetailDtoAmq);
     }
 
 
