@@ -5,6 +5,7 @@ import com.fotova.dto.order.OrderBasketDto;
 import com.fotova.dto.order.OrderDto;
 import com.fotova.dto.orderProduct.OrderProductBillingDto;
 import com.fotova.dto.orderProduct.OrderProductDto;
+import com.fotova.dto.stripe.StripOrderBasket;
 import com.fotova.dto.stripe.StripeProductRequest;
 import com.fotova.entity.ClientEntity;
 import com.fotova.entity.OrderEntity;
@@ -206,6 +207,27 @@ public class OrderService {
 
     public void sendRabbitMQOrder(String orderId) {
         rabbitMQProducer.sendMessage(orderId);
+    }
+
+    public void checkOrderPrice(StripeProductRequest productRequest) {
+
+        try {
+            Long amount = productRequest.getAmount();
+            double price = 0.0;
+
+            for(StripOrderBasket stripOrderBasket : productRequest.getProductBasket()) {
+                ProductEntity productEntity = productRepository.findById(stripOrderBasket.getProductId());
+                price += productEntity.getPrice() * stripOrderBasket.getQuantity();
+            }
+
+            if((int)price != amount) {
+                throw new RuntimeException("Order price is not correct regarding the product quantity and individual price");
+            }
+        }
+        catch (Exception e) {
+            throw new RuntimeException("Error checking order price: " + e.getMessage());
+        }
+
     }
 
     public void checkOrderQuantity(String uuid) {
