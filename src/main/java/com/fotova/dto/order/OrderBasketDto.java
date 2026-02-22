@@ -7,7 +7,7 @@ import org.springframework.data.redis.core.RedisHash;
 
 @Getter
 @Setter
-@RedisHash("StudentRedis")
+@RedisHash("OrderBasketRequestRedis")
 public class OrderBasketDto {
     private String id;
     private String verificationCode;
