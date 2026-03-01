@@ -17,4 +17,12 @@ public class OrderHelper {
 
         return total;
     }
+    public Integer computeShippingPrice(String country) {
+        if(!country.equals(OrderConstant.ORDER_FREE_FEES_COUNTRY)) {
+            return OrderConstant.ORDER_FEES;
+        }
+        else {
+            return OrderConstant.ORDER_FREE_FEES;
+        }
+    }
 }

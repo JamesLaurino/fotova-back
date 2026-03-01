@@ -19,6 +19,7 @@ import com.fotova.repository.order.OrderProductRepositoryImpl;
 import com.fotova.repository.order.OrderRepositoryImpl;
 import com.fotova.repository.product.ProductRepositoryImpl;
 import com.fotova.service.RabbitMQProducer;
+import com.fotova.service.order.helper.OrderHelper;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,6 +53,8 @@ public class OrderService {
 
     @Autowired
     private RabbitMQProducer rabbitMQProducer;
+    @Autowired
+    private OrderHelper orderHelper;
 
     public StripeProductRequest setStripeProductRequestName(StripeProductRequest stripeProductRequest) {
         stripeProductRequest.setName(UUID.randomUUID().toString());
@@ -218,6 +221,13 @@ public class OrderService {
             for(StripOrderBasket stripOrderBasket : productRequest.getProductBasket()) {
                 ProductEntity productEntity = productRepository.findById(stripOrderBasket.getProductId());
                 price += productEntity.getPrice() * stripOrderBasket.getQuantity();
+            }
+
+            Optional<ClientEntity> clientEntity = clientRepository.findFirstByEmail(productRequest.getEmail());
+
+            if(clientEntity.isPresent()) {
+                Integer shippingPrice = orderHelper.computeShippingPrice(clientEntity.get().getAddress().getCountry());
+                price += shippingPrice;
             }
 
             if((int)price != amount) {
