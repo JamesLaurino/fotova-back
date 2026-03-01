@@ -15,6 +15,7 @@ import com.fotova.exception.DataExistException;
 import com.fotova.exception.NotFoundException;
 import com.fotova.repository.product.ProductRepositoryImpl;
 import com.fotova.service.RabbitMQProducer;
+import com.fotova.service.ai.AiService;
 import com.fotova.service.file.FileService;
 import com.fotova.service.image.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,10 +48,14 @@ public class ProductService
     @Autowired
     private ImageService imageService;
 
+    @Autowired
+    private AiService aiService;
+
     public ProductDtoBack saveProduct(ProductDtoBack product, final int categoryId) {
         try {
             ProductEntity productEntity = productMapper.mapToProductEntity(product);
             ProductEntity productEntityToMap = productRepository.saveWithCategory(productEntity,categoryId);
+            aiService.translateTitleAndDescription(productEntityToMap);
             return productMapper.mapToProductDtoBack(productEntityToMap);
         } catch (Exception e) {
             throw new DataExistException("Product already exist for the given id");

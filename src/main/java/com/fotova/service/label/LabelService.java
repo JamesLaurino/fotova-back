@@ -20,4 +20,16 @@ public class LabelService {
         List<LabelEntity> labelEntities = labelRepository.findAll();
         return labelMapper.mapToLabelDtoList(labelEntities);
     }
+
+    public LabelDto findLabelByProductId(Integer productId) {
+        LabelEntity labelEntity = labelRepository.findByProductId(productId);
+        return labelMapper.mapToLabelDto(labelEntity);
+    }
+
+    public LabelDto updateLabel(LabelDto labelDto) {
+        LabelEntity labelEntityToUpdate = labelRepository.findById(labelDto.getId());
+        LabelEntity labelEntityUpdate = labelMapper.mapToLabelEntity(labelDto,labelEntityToUpdate);
+        labelRepository.save(labelEntityUpdate);
+        return labelDto;
+    }
 }

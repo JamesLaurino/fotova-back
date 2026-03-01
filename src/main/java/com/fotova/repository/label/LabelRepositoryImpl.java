@@ -43,4 +43,8 @@ public class LabelRepositoryImpl implements ICrud<LabelEntity> {
     public LabelEntity update(LabelEntity labelEntity) {
         return labelRepository.save(labelEntity);
     }
+
+    public LabelEntity findByProductId(Integer productId) {
+        return labelRepository.findLabelByProductId(productId);
+    }
 }

@@ -33,4 +33,17 @@ public class LabelMapper {
         }
         return labelDtoList;
     }
+
+    public LabelEntity mapToLabelEntity(LabelDto labelDto,LabelEntity labelEntity) {
+
+        labelEntity.setTitleFr(labelDto.getTitleFr());
+        labelEntity.setTitleEn(labelDto.getTitleEn());
+        labelEntity.setTitleRu(labelDto.getTitleRu());
+
+        labelEntity.setDescriptionFr(labelDto.getDescriptionFr());
+        labelEntity.setDescriptionEn(labelDto.getDescriptionEn());
+        labelEntity.setDescriptionRu(labelDto.getDescriptionRu());
+
+        return labelEntity;
+    }
 }
