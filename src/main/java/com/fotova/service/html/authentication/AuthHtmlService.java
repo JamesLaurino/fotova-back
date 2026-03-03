@@ -1,9 +1,19 @@
 package com.fotova.service.html.authentication;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthHtmlService {
+
+    @Value("${SERVER_HOST}")
+    private String SERVER_HOST; // localhost
+
+    @Value("${SERVER_PROTOCOL}")
+    private String SERVER_PROTOCOL; // http
+
+    @Value("${FRONT_PORT}")
+    private String FRONT_PORT; // 4200
 
     public String buildSuccessResetPassword() {
         return """
