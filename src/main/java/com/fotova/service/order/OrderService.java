@@ -233,6 +233,8 @@ public class OrderService {
             if((int)price != amount) {
                 throw new RuntimeException("Order price is not correct regarding the product quantity and individual price");
             }
+            productRequest.setAmount(productRequest.getAmount() * 100);
+            productRequest.setQuantity(1L);
         }
         catch (Exception e) {
             throw new RuntimeException("Error checking order price: " + e.getMessage());
