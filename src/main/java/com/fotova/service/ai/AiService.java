@@ -72,10 +72,18 @@ public class AiService {
                 .call()
                 .entity(AiProductOutputDto.class);
 
-        LabelEntity labelEntity = aiMapper.mapToLabelEntity(aiProductOutputDto);
-        labelEntity.setProduct(productEntity);
-        labelRepository.save(labelEntity);
-        return "Labels translated and added successfully";
-    }
+        if(aiProductOutputDto == null) {
+            AiProductOutputDto aiProductOutputDtoNull = new AiProductOutputDto();
+            LabelEntity labelEntity = aiMapper.mapToLabelEntity(aiProductOutputDtoNull);
+            labelEntity.setProduct(productEntity);
+            labelRepository.save(labelEntity);
+            return "Labels translated and added successfully";
+        } else {
+            LabelEntity labelEntity = aiMapper.mapToLabelEntity(aiProductOutputDto);
+            labelEntity.setProduct(productEntity);
+            labelRepository.save(labelEntity);
+            return "Labels translated and added successfully";
+        }
 
+    }
 }

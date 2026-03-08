@@ -15,18 +15,22 @@ public class AiMapper {
         return aiProductInputDto;
     }
 
+    private String safe(String val) {
+        return (val == null || val.isBlank()) ? "N/A" : val;
+    }
+
     public LabelEntity mapToLabelEntity( AiProductOutputDto aiProductOutputDto) {
         LabelEntity labelEntity = new LabelEntity();
 
         // TITLE
-        labelEntity.setTitleEn(aiProductOutputDto.getTitle_english());
-        labelEntity.setTitleFr(aiProductOutputDto.getTitle_french());
-        labelEntity.setTitleRu(aiProductOutputDto.getTitle_russian());
+        labelEntity.setTitleEn(safe(aiProductOutputDto.getTitle_english()));
+        labelEntity.setTitleFr(safe(aiProductOutputDto.getTitle_french()));
+        labelEntity.setTitleRu(safe(aiProductOutputDto.getTitle_russian()));
 
         // DESCRIPTION
-        labelEntity.setDescriptionEn(aiProductOutputDto.getDescription_english());
-        labelEntity.setDescriptionFr(aiProductOutputDto.getDescription_french());
-        labelEntity.setDescriptionRu(aiProductOutputDto.getDescription_russian());
+        labelEntity.setDescriptionEn(safe(aiProductOutputDto.getDescription_english()));
+        labelEntity.setDescriptionFr(safe(aiProductOutputDto.getDescription_french()));
+        labelEntity.setDescriptionRu(safe(aiProductOutputDto.getDescription_russian()));
 
         return labelEntity;
     }
