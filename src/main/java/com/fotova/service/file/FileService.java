@@ -26,7 +26,7 @@ import java.util.stream.Stream;
 @Service
 public class FileService {
 
-    @Value("${file.upload.path}")
+    @Value("${file.serve.path}")
     private String pathFile;
 
     @Autowired

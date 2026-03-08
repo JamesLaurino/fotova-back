@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public class ImageRepositoryImpl implements ICrud<ImageEntity> {
@@ -44,6 +45,13 @@ public class ImageRepositoryImpl implements ICrud<ImageEntity> {
     }
 
     public void updateImagesByProductId(Integer productId) {
+        ImageEntity imageEntity = getImageEntityByProductId(productId);
+        imageEntity.setPath(UUID.randomUUID().toString() + ".jpg");
         imageRepositoryJpa.updateImagesByProductId(productId);
+        imageRepositoryJpa.save(imageEntity);
+    }
+
+    public ImageEntity getImageEntityByProductId(Integer productId) {
+        return imageRepositoryJpa.getImageEntityByProductId(productId);
     }
 }
