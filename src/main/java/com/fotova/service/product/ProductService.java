@@ -101,7 +101,6 @@ public class ProductService
         try {
             imageService.updateImagesByProductId(productId);
             labelService.updateLabelByProductId(productId);
-            labelService.deleteByProductId(productId);
             productRepository.deleteById(productId);
             return "Product deleted with id: " + productId;
         } catch (Exception e) {
