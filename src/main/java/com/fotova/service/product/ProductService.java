@@ -18,6 +18,7 @@ import com.fotova.service.RabbitMQProducer;
 import com.fotova.service.ai.AiService;
 import com.fotova.service.file.FileService;
 import com.fotova.service.image.ImageService;
+import com.fotova.service.label.LabelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -47,6 +48,9 @@ public class ProductService
 
     @Autowired
     private ImageService imageService;
+
+    @Autowired
+    private LabelService labelService;
 
     @Autowired
     private AiService aiService;
@@ -96,6 +100,8 @@ public class ProductService
     public String deleteProductById(int productId) {
         try {
             imageService.updateImagesByProductId(productId);
+            labelService.updateLabelByProductId(productId);
+            labelService.deleteByProductId(productId);
             productRepository.deleteById(productId);
             return "Product deleted with id: " + productId;
         } catch (Exception e) {

@@ -21,6 +21,14 @@ public class LabelService {
         return labelMapper.mapToLabelDtoList(labelEntities);
     }
 
+    public void updateLabelByProductId(int productId) {
+        labelRepository.updateLabelByProductId(productId);
+    }
+
+    public void deleteByProductId(Integer productId) {
+        labelRepository.deleteByProductId(productId);
+    }
+
     public LabelDto findLabelByProductId(Integer productId) {
         LabelEntity labelEntity = labelRepository.findByProductId(productId);
         return labelMapper.mapToLabelDto(labelEntity);
