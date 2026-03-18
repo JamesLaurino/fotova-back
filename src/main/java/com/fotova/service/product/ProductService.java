@@ -99,6 +99,9 @@ public class ProductService
 
     public String deleteProductById(int productId) {
         try {
+            ProductEntity productEntityToDelete = productRepository.findById(productId);
+            fileService.deleteImage(productEntityToDelete.getUrl());
+            fileService.deleteSecondaryImagesFromServerByName(productEntityToDelete.getImageEntity());
             imageService.updateImagesByProductId(productId);
             labelService.updateLabelByProductId(productId);
             productRepository.deleteById(productId);

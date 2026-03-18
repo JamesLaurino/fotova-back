@@ -3,6 +3,8 @@ package com.fotova.service.file;
 import com.fotova.dto.file.FileDto;
 import com.fotova.dto.file.FileResponse;
 import com.fotova.dto.file.FileResponseDto;
+import com.fotova.entity.ImageEntity;
+import com.fotova.exception.DataExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -31,6 +33,29 @@ public class FileService {
 
     @Autowired
     private FileMapper fileMapper;
+
+    public void deleteSecondaryImagesFromServerByName(List<ImageEntity> imageEntities) {
+        List<String> imagesPath = fileMapper.mapImagesPathFromProduct(imageEntities);
+        for (String fileName : imagesPath) {
+           deleteImage(fileName);
+        }
+    }
+
+    public void deleteImage(String fileName) {
+        Path folder = Path.of(pathFile);
+        try {
+            Path filePath = folder.resolve(fileName);
+
+            if (Files.deleteIfExists(filePath)) {
+                System.out.println("Supprimé : " + filePath);
+            } else {
+                System.out.println("Non trouvé : " + filePath);
+            }
+
+        } catch (IOException e) {
+            throw new DataExistException("Image non trouvée en erreur : " + fileName);
+        }
+    }
 
     public String uploadFile(MultipartFile file) throws IOException {
 

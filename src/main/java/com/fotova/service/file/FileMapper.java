@@ -2,6 +2,7 @@ package com.fotova.service.file;
 
 import com.fotova.dto.file.FileResponse;
 import com.fotova.dto.file.FileResponseDto;
+import com.fotova.entity.ImageEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,6 +21,14 @@ public class FileMapper {
         }
 
         return fileResponseDtoList;
+    }
+
+    public List<String> mapImagesPathFromProduct(List<ImageEntity> imageEntities) {
+        List<String> imagesPath = new ArrayList<>();
+        for (ImageEntity imageEntity : imageEntities) {
+            imagesPath.add(imageEntity.getPath());
+        }
+        return imagesPath;
     }
 
     private String cleanFileUrl(String fileUrl) {
