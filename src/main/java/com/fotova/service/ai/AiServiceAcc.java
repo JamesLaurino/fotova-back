@@ -23,12 +23,13 @@ public class AiServiceAcc implements AiService {
         ProductEntity productEntity = productRepository.save(product);
 
         LabelEntity labelEntity = new LabelEntity();
-        labelEntity.setDescriptionEn("N/A");
-        labelEntity.setDescriptionRu("N/A");
-        labelEntity.setDescriptionFr("N/A");
-        labelEntity.setTitleEn("N/A");
-        labelEntity.setTitleRu("N/A");
-        labelEntity.setTitleEn("N/A");
+
+        labelEntity.setDescriptionEn(product.getDescription());
+        labelEntity.setDescriptionRu(product.getDescription());
+        labelEntity.setDescriptionFr(product.getDescription());
+        labelEntity.setTitleEn(productEntity.getName());
+        labelEntity.setTitleRu(productEntity.getName());
+        labelEntity.setTitleEn(productEntity.getName());
         labelEntity.setProduct(productEntity);
         labelRepository.save(labelEntity);
         return "Labels translated and added successfully";
