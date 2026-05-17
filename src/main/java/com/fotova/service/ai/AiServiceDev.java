@@ -34,58 +34,63 @@ public class AiServiceDev implements AiService {
     }
 
     public String translateTitleAndDescription(ProductEntity product) {
-        ProductEntity productEntity = productRepository.save(product);
-        AiProductInputDto aiProductInputDto = aiMapper.mapToAiProductInput(product);
 
-        String queryUser = """
-        You must return ONLY valid JSON.
-        
-        All fields are mandatory.
-        No field can be empty.
-        No field can be null.
-        
-        Required JSON structure:
+        try
         {
-          "title_english": "",
-          "title_russian": "",
-          "title_french": "",
-          "description_english": "",
-          "description_russian": "",
-          "description_french": ""
-        }
-        
-        Instructions:
-        - Translate title and description into English, Russian and French.
-        - Always provide a value for every field.
-        - If the text is already in that language, copy it.
-        - Keep meaning and tone.
-        - No explanations.
-        - No extra fields.
-        
-        Title: %s
-        Description: %s
-        """.formatted(
-                aiProductInputDto.getTitle(),
-                aiProductInputDto.getDescription()
-        );
-        AiProductOutputDto aiProductOutputDto = chatClient.prompt()
-                .system(PromptConstant.TRANSLATE_LABEL_SYSTEM)
-                .user(queryUser)
-                .call()
-                .entity(AiProductOutputDto.class);
+            ProductEntity productEntity = productRepository.save(product);
+            AiProductInputDto aiProductInputDto = aiMapper.mapToAiProductInput(product);
 
-        if(aiProductOutputDto == null) {
-            AiProductOutputDto aiProductOutputDtoNull = new AiProductOutputDto();
-            LabelEntity labelEntity = aiMapper.mapToLabelEntity(aiProductOutputDtoNull);
-            labelEntity.setProduct(productEntity);
-            labelRepository.save(labelEntity);
-            return "Labels translated and added successfully";
-        } else {
-            LabelEntity labelEntity = aiMapper.mapToLabelEntity(aiProductOutputDto);
-            labelEntity.setProduct(productEntity);
-            labelRepository.save(labelEntity);
-            return "Labels translated and added successfully";
-        }
+            String queryUser = """
+            You must return ONLY valid JSON.
+            
+            All fields are mandatory.
+            No field can be empty.
+            No field can be null.
+            
+            Required JSON structure:
+            {
+              "title_english": "",
+              "title_russian": "",
+              "title_french": "",
+              "description_english": "",
+              "description_russian": "",
+              "description_french": ""
+            }
+            
+            Instructions:
+            - Translate title and description into English, Russian and French.
+            - Always provide a value for every field.
+            - If the text is already in that language, copy it.
+            - Keep meaning and tone.
+            - No explanations.
+            - No extra fields.
+            
+            Title: %s
+            Description: %s
+            """.formatted(
+                        aiProductInputDto.getTitle(),
+                        aiProductInputDto.getDescription()
+                );
+            AiProductOutputDto aiProductOutputDto = chatClient.prompt()
+                    .system(PromptConstant.TRANSLATE_LABEL_SYSTEM)
+                    .user(queryUser)
+                    .call()
+                    .entity(AiProductOutputDto.class);
 
+            if(aiProductOutputDto == null) {
+                AiProductOutputDto aiProductOutputDtoNull = new AiProductOutputDto();
+                LabelEntity labelEntity = aiMapper.mapToLabelEntity(aiProductOutputDtoNull);
+                labelEntity.setProduct(productEntity);
+                labelRepository.save(labelEntity);
+                return "Labels translated and added successfully";
+            } else {
+                LabelEntity labelEntity = aiMapper.mapToLabelEntity(aiProductOutputDto);
+                labelEntity.setProduct(productEntity);
+                labelRepository.save(labelEntity);
+                return "Labels translated and added successfully";
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Error while translating the text",e);
+        }
     }
 }
