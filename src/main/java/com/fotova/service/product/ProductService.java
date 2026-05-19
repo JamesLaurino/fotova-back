@@ -100,12 +100,18 @@ public class ProductService
     public String deleteProductById(int productId) {
         try {
             ProductEntity productEntityToDelete = productRepository.findById(productId);
-            fileService.deleteImage(productEntityToDelete.getUrl());
-            fileService.deleteSecondaryImagesFromServerByName(productEntityToDelete.getImageEntity());
-            imageService.updateImagesByProductId(productId);
-            labelService.updateLabelByProductId(productId);
-            productRepository.deleteById(productId);
-            return "Product deleted with id: " + productId;
+            if(productEntityToDelete.getUrl().isEmpty()) {
+                labelService.deleteByProductId(productId);
+                productRepository.deleteById(productId);
+                return "Product deleted with id: " + productEntityToDelete.getId();
+            } else {
+                fileService.deleteImage(productEntityToDelete.getUrl());
+                fileService.deleteSecondaryImagesFromServerByName(productEntityToDelete.getImageEntity());
+                imageService.updateImagesByProductId(productId);
+                labelService.updateLabelByProductId(productId);
+                productRepository.deleteById(productId);
+                return "Product deleted with id: " + productId;
+            }
         } catch (Exception e) {
             throw new NotFoundException("Error deleting product with id: " + productId + " " + e.getMessage());
         }
