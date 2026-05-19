@@ -36,6 +36,10 @@ public class ImageService {
         }
     }
 
+    public void deleteGalleryImageByProductId(Integer productId) {
+        imageRepositoryImpl.deleteImageGalleryByProductId(productId);
+    }
+
     public String deleteImageById(Integer id) {
         try {
             imageRepositoryImpl.deleteById(id);

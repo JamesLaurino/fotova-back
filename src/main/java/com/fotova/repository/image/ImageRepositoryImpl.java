@@ -51,6 +51,11 @@ public class ImageRepositoryImpl implements ICrud<ImageEntity> {
         imageRepositoryJpa.save(imageEntity);
     }
 
+    public void deleteImageGalleryByProductId(Integer productId) {
+        imageRepositoryJpa.updateImagesByProductId(productId);
+        imageRepositoryJpa.deleteImagesByProductId(productId);
+    }
+
     public ImageEntity getImageEntityByProductId(Integer productId) {
         return imageRepositoryJpa.getImageEntityByProductId(productId);
     }

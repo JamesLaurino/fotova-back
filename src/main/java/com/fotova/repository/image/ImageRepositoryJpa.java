@@ -15,6 +15,11 @@ public interface ImageRepositoryJpa extends JpaRepository<ImageEntity,Integer> {
     @Query("UPDATE ImageEntity i SET i.product.id = null WHERE i.product.id = ?1")
     void updateImagesByProductId(Integer productId);
 
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM ImageEntity i WHERE i.product.id = ?1")
+    void deleteImagesByProductId(Integer productId);
+
     @Transactional
     @Query(value = "SELECT i FROM ImageEntity i WHERE i.product.id = ?1")
     ImageEntity getImageEntityByProductId(Integer productId);
