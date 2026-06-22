@@ -1,6 +1,5 @@
 package com.fotova.service.comment;
 
-import com.fotova.dto.client.ClientCommentDto;
 import com.fotova.dto.client.ClientDto;
 import com.fotova.dto.comment.CommentDto;
 import com.fotova.entity.CommentEntity;
@@ -50,22 +49,19 @@ public class CommentService {
     }
 
     public String deleteCommentByIdWithClientId(int id, int clientId) {
-        try {
+        ClientDto clientDto = clientService.getClientById(clientId);
 
-            ClientDto clientDto = clientService.getClientById(clientId);
+        boolean owns = clientDto.getCommentEntities().stream()
+                .anyMatch(clientCommentDto -> clientCommentDto.getId() != null
+                        && clientCommentDto.getId() == id);
 
-            for(ClientCommentDto clientCommentDto: clientDto.getCommentEntities()) {
-                if(clientCommentDto.getId() == id) {
-                    throw new NotFoundException("Comment not found for id: " + id);
-                }
-            }
-
-            commentRepositoryImpl.updateCommentClientId(id);
-            commentRepositoryImpl.deleteById(id);
-            return "Comment has been deleted successfully for id : " + id;
-        } catch (Exception e) {
+        if (!owns) {
             throw new NotFoundException("Comment not found for id: " + id);
         }
+
+        commentRepositoryImpl.updateCommentClientId(id);
+        commentRepositoryImpl.deleteById(id);
+        return "Comment has been deleted successfully for id : " + id;
     }
 
     public CommentDto updateComment(CommentDto commentDto) {
