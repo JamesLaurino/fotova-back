@@ -10,6 +10,7 @@ import com.fotova.service.client.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -65,12 +66,21 @@ public class CommentService {
     }
 
     public CommentDto updateComment(CommentDto commentDto) {
-        try {
-            CommentEntity commentEntity = commentRepositoryImpl.update(commentMapper.mapToCommentEntity(commentDto));
-            return commentMapper.mapToCommentDto(commentEntity);
-        } catch (Exception e) {
+        if (commentDto.getId() == null) {
+            throw new NotFoundException("Comment id is required for update");
+        }
+
+        CommentEntity existing = commentRepositoryImpl.findById(commentDto.getId());
+        if (existing == null) {
             throw new NotFoundException("Comment not found for id: " + commentDto.getId());
         }
+
+        existing.setHeader(commentDto.getHeader());
+        existing.setBody(commentDto.getBody());
+        existing.setUpdateAt(Instant.now());
+
+        CommentEntity updated = commentRepositoryImpl.update(existing);
+        return commentMapper.mapToCommentDto(updated);
     }
 
     public CommentDto getCommentById(int commentId) {
