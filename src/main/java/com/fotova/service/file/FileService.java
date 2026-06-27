@@ -22,6 +22,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -60,11 +61,15 @@ public class FileService {
     public String uploadFile(MultipartFile file) throws IOException {
 
         Files.createDirectories(Paths.get(pathFile));
+        // Le serveur possède l'identité de stockage : on préfixe un UUID pour
+        // garantir l'unicité du fichier disque et éviter qu'un nouvel upload
+        // portant le même nom n'en écrase un autre (collision cross-produit).
+        String uniqueName = UUID.randomUUID() + "_" + file.getOriginalFilename();
         byte[] bytes = file.getBytes();
-        Path path = Paths.get(pathFile + file.getOriginalFilename());
+        Path path = Paths.get(pathFile + uniqueName);
         Files.write(path, bytes);
 
-        return "Uploaded Successfully";
+        return uniqueName;
     }
 
     public FileDto getAllFiles() {
